@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class ReservedRoomGUI extends javax.swing.JFrame {
 
-    private final RoomController roomService; 
+    private final RoomController roomController; 
     
     /**
      * Creates new form ReservedRoomGUI
@@ -26,7 +26,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
      */
     public ReservedRoomGUI(RoomController roomService) {
         initComponents();
-        this.roomService = roomService;
+        this.roomController = roomService;
 //        List<String> roomList = reservedRoom.getRoomList();
 //        roomListDisplay = new JList<>(roomList.toArray(String[]::new));
     }
@@ -372,7 +372,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "panel1");
         
-        roomService.displayTableRoom((DefaultTableModel) showRoomTable.getModel());
+        roomController.displayTableRoom((DefaultTableModel) showRoomTable.getModel());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -388,7 +388,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jList1ValueChanged
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        new AddRoomGUI(roomService).setVisible(true);
+        new AddRoomGUI(roomController).setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -401,8 +401,8 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                 "Confirm", 
                 JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
-                roomService.destroyRoom(roomId);
-                roomService.displayTableRoom((DefaultTableModel) ReservedRoomGUI.showRoomTable.getModel());
+                roomController.destroyRoom(roomId);
+                roomController.displayTableRoom((DefaultTableModel) ReservedRoomGUI.showRoomTable.getModel());
             } else {
                 //
             }
@@ -418,7 +418,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
             String roomNumber = showRoomTable.getValueAt(selectedRow, 1).toString();
             double price_per_night = (double) showRoomTable.getValueAt(selectedRow, 2);
             String status = showRoomTable.getValueAt(selectedRow, 3).toString();
-            new EditRoomGUI(roomId, roomNumber, price_per_night, status, roomService).setVisible(true);
+            new EditRoomGUI(roomId, roomNumber, price_per_night, status, roomController).setVisible(true);
             
         } else {
             JOptionPane.showMessageDialog(null, "Please select a row to edit.");
@@ -456,8 +456,8 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
 //        /* Create and display the form */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                RoomService roomService = new RoomService();
-//                new ReservedRoomGUI(roomService).setVisible(true);
+//                RoomService roomController = new RoomService();
+//                new ReservedRoomGUI(roomController).setVisible(true);
 //            }
 //        });
 //    }
