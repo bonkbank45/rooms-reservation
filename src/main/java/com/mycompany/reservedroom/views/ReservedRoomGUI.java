@@ -15,6 +15,7 @@ import com.mycompany.reservedroom.controllers.RoomController;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class ReservedRoomGUI extends javax.swing.JFrame {
 
@@ -27,10 +28,17 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     public ReservedRoomGUI(RoomController roomService) {
         initComponents();
         this.roomController = roomService;
-//        List<String> roomList = reservedRoom.getRoomList();
-//        roomListDisplay = new JList<>(roomList.toArray(String[]::new));
+        this.roomController.setView(this);
     }
-
+    
+    public void updateRoomTable(TableModel model) {
+        this.showRoomTable.setModel(model);
+    }
+    
+    public TableModel getShowRoomTable() {
+        return this.showRoomTable.getModel();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -371,8 +379,8 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         CardLayout card = (CardLayout) this.mainPanel.getLayout();
         card.show(this.mainPanel, "panel1");
-        
-        this.roomController.displayTableRoom((DefaultTableModel) this.showRoomTable.getModel());
+        this.roomController.updateRoomTable();
+//        this.updateRoomTable(this.showRoomTable.getModel());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -401,8 +409,8 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                 "Confirm", 
                 JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
-                this.roomController.destroyRoom(roomId);
-                this.roomController.displayTableRoom((DefaultTableModel) ReservedRoomGUI.showRoomTable.getModel());
+                this.roomController.handleRoomDeletion(roomId);
+//                this.roomController.displayTableRoom((DefaultTableModel) ReservedRoomGUI.showRoomTable.getModel());
             } 
         }
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -489,6 +497,6 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel panel1;
     private javax.swing.JPanel panel2;
-    public static javax.swing.JTable showRoomTable;
+    public javax.swing.JTable showRoomTable;
     // End of variables declaration//GEN-END:variables
 }

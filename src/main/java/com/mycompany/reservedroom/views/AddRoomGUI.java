@@ -22,6 +22,7 @@ public class AddRoomGUI extends javax.swing.JFrame {
         initComponents();
         this.roomController = roomController;
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -157,16 +158,12 @@ public class AddRoomGUI extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String roomNumber = this.roomNumberField.getText();
-        
-        
+       
         try {
             double pricePerDay = Double.parseDouble(this.pricePerDayField.getText());
-            boolean isSuccess = this.roomController.addRoom(roomNumber, pricePerDay);
-            
-            if (isSuccess) {
+            boolean success = this.roomController.handleRoomAdding(roomNumber, pricePerDay);
+            if (success) {
                 JOptionPane.showMessageDialog(this, "Room added successfully!");
-                this.roomController.displayTableRoom(
-                        (DefaultTableModel) ReservedRoomGUI.showRoomTable.getModel());
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Failed to add room.");

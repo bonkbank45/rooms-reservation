@@ -27,14 +27,13 @@ public class EditRoomGUI extends javax.swing.JFrame {
      * @param status
      * @param roomService
      */
-    public EditRoomGUI(int roomId, String roomNumber, double price_per_night, String status, RoomController roomService) {
+    public EditRoomGUI(int roomId, String roomNumber, double price_per_night, String status, RoomController roomController) {
         initComponents();
-        this.roomController = roomService;
         this.roomId = roomId;
         this.roomNumber = roomNumber;
         this.price_per_night = price_per_night;
         this.status = status;
-        
+        this.roomController = roomController;
         
         this.jLabel2.setText(String.valueOf(this.roomId));
         this.jTextField1.setText(this.roomNumber);
@@ -210,15 +209,14 @@ public class EditRoomGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        
         try {
-            boolean isSuccess = this.roomController.editRoom(this.roomId, 
+            boolean success = this.roomController.handleRoomEdition(this.roomId, 
                                     this.jTextField1.getText(), 
                                     Double.valueOf(this.jTextField2.getText()), 
                                     this.jComboBox1.getSelectedItem().toString() );
-            if (isSuccess) {
+            if (success) {
                 JOptionPane.showMessageDialog(this, "Room edited successfully!");
-                this.roomController.displayTableRoom((DefaultTableModel) ReservedRoomGUI.showRoomTable.getModel());
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Failed to edit room.");

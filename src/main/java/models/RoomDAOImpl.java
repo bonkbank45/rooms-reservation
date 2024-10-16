@@ -14,6 +14,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -76,6 +78,31 @@ public class RoomDAOImpl implements RoomDAO {
         }
         return roomList;
     }
+    
+//    @Override
+//    public TableModel getRoomTableModel() {
+//        DefaultTableModel table = new DefaultTableModel();
+//        table.addColumn("Room ID");
+//        table.addColumn("Room Number");
+//        table.addColumn("Price");
+//        table.addColumn("Status");
+//        try {
+//            List<Room> roomList = this.getAllRooms();
+//            for (Room room : roomList) {
+//                table.addRow(new Object[]{
+//                    room.getRoomId(),
+//                    room.getRoomNumber(),
+//                    room.getRoomPrice(),
+//                    ((room.getStatus()).substring(0, 1)).toUpperCase() + 
+//                    (room.getStatus()).substring(1)
+//                });
+//            }
+//            return table;
+//        } catch (SQLException e) {
+//            System.out.println("Error displaying room table: " + e.getMessage());
+//        }
+//        return null;
+//    }
     
     @Override
     public boolean addRoom(String roomNumber, double pricePerDay) throws SQLException {
