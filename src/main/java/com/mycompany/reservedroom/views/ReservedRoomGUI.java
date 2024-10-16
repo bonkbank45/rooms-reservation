@@ -369,10 +369,10 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        CardLayout card = (CardLayout)mainPanel.getLayout();
-        card.show(mainPanel, "panel1");
+        CardLayout card = (CardLayout) this.mainPanel.getLayout();
+        card.show(this.mainPanel, "panel1");
         
-        roomController.displayTableRoom((DefaultTableModel) showRoomTable.getModel());
+        this.roomController.displayTableRoom((DefaultTableModel) this.showRoomTable.getModel());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -388,37 +388,34 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jList1ValueChanged
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        new AddRoomGUI(roomController).setVisible(true);
+        new AddRoomGUI(this.roomController).setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        int selectedRow = showRoomTable.getSelectedRow();
+        int selectedRow = this.showRoomTable.getSelectedRow();
         
         if (selectedRow != -1) {
-            int roomId = (int) showRoomTable.getValueAt(selectedRow, 0);
+            int roomId = (int) this.showRoomTable.getValueAt(selectedRow, 0);
             int confirm = JOptionPane.showConfirmDialog(null, 
                 "Are you sure to delete this room?", 
                 "Confirm", 
                 JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
-                roomController.destroyRoom(roomId);
-                roomController.displayTableRoom((DefaultTableModel) ReservedRoomGUI.showRoomTable.getModel());
-            } else {
-                //
-            }
+                this.roomController.destroyRoom(roomId);
+                this.roomController.displayTableRoom((DefaultTableModel) ReservedRoomGUI.showRoomTable.getModel());
+            } 
         }
-        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        int selectedRow = showRoomTable.getSelectedRow();
+        int selectedRow = this.showRoomTable.getSelectedRow();
         
         if (selectedRow != -1) {
-            int roomId = (int) showRoomTable.getValueAt(selectedRow, 0);
-            String roomNumber = showRoomTable.getValueAt(selectedRow, 1).toString();
-            double price_per_night = (double) showRoomTable.getValueAt(selectedRow, 2);
-            String status = showRoomTable.getValueAt(selectedRow, 3).toString();
-            new EditRoomGUI(roomId, roomNumber, price_per_night, status, roomController).setVisible(true);
+            int roomId = (int) this.showRoomTable.getValueAt(selectedRow, 0);
+            String roomNumber = this.showRoomTable.getValueAt(selectedRow, 1).toString();
+            double price_per_night = (double) this.showRoomTable.getValueAt(selectedRow, 2);
+            String status = this.showRoomTable.getValueAt(selectedRow, 3).toString();
+            new EditRoomGUI(roomId, roomNumber, price_per_night, status, this.roomController).setVisible(true);
             
         } else {
             JOptionPane.showMessageDialog(null, "Please select a row to edit.");

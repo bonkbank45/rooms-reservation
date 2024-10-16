@@ -24,7 +24,7 @@ public class RoomController {
     
     public void displayTableRoom(DefaultTableModel tblModel) {
         try {
-            List<Room> roomList = roomDAO.getAllRooms();
+            List<Room> roomList = this.roomDAO.getAllRooms();
             tblModel.setRowCount(0);
             for (Room room : roomList) {
                 tblModel.addRow(new Object[]{
@@ -44,7 +44,7 @@ public class RoomController {
         Room room;
         try {
             room = new Room(9999999, roomNumber, pricePerDay, "Available");
-            return roomDAO.addRoom(room.getRoomNumber(), room.getRoomPrice());
+            return this.roomDAO.addRoom(room.getRoomNumber(), room.getRoomPrice());
         } catch (SQLException e) {
             System.out.println("Error adding room: " + e.getMessage());
             return false;
@@ -53,7 +53,7 @@ public class RoomController {
     
     public boolean editRoom(int roomId, String newRoomNumber, Double newPrice, String newStatus) throws IllegalArgumentException {
         try {
-            Room room = roomDAO.getRoomById(roomId);
+            Room room = this.roomDAO.getRoomById(roomId);
             if (room == null) {
                 throw new IllegalArgumentException("Room not found with id: " + roomId);
             }
@@ -62,7 +62,7 @@ public class RoomController {
             room.setRoomPrice(newPrice);
             room.setStatus(newStatus);
             
-            return roomDAO.editRoom(room);
+            return this.roomDAO.editRoom(room);
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
             return false;
@@ -71,7 +71,7 @@ public class RoomController {
     
     public boolean destroyRoom(int roomId) {
         try {
-            return roomDAO.destroyRoom(roomId);
+            return this.roomDAO.destroyRoom(roomId);
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
             return false;

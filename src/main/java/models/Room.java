@@ -23,11 +23,11 @@ public class Room {
     }
 
     public int getRoomId() {
-        return roomId;
+        return this.roomId;
     }
 
     public String getRoomNumber() {
-        return roomNumber;
+        return this.roomNumber;
     }
     
     public void setRoomNumber(String roomNumber) {
@@ -38,7 +38,7 @@ public class Room {
     }
 
     public double getRoomPrice() {
-        return roomPrice;
+        return this.roomPrice;
     }
     
     public void setRoomPrice(double roomPrice) {
@@ -49,7 +49,7 @@ public class Room {
     }
 
     public String getStatus() {
-        return status;
+        return this.status;
     }
     
     public void setStatus(String status) {

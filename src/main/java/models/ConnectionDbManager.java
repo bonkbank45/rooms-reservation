@@ -21,8 +21,8 @@ public class ConnectionDbManager {
     
     public void closeConnection() {
         try {
-            if (connection != null) {
-                connection.close();
+            if (this.connection != null) {
+                this.connection.close();
                 System.out.println("Connection closed");
             }
         } catch (SQLException e) {
@@ -32,13 +32,13 @@ public class ConnectionDbManager {
     
     public Connection getConnection() {
         try {
-            connection = DriverManager.getConnection(url, username, password);
+            this.connection = DriverManager.getConnection(url, username, password);
             System.out.println("Connected to the database");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             System.out.println("Connection failed");
         }
-        return connection;
+        return this.connection;
     }
 
     public static void main(String[] args) {

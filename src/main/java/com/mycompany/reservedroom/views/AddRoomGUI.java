@@ -22,10 +22,6 @@ public class AddRoomGUI extends javax.swing.JFrame {
         initComponents();
         this.roomController = roomController;
     }
-    
-    public void addSubmitButtonListener(java.awt.event.ActionListener listener) {
-        jButton2.addActionListener(listener);
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -160,12 +156,12 @@ public class AddRoomGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String roomNumber = roomNumberField.getText();
+        String roomNumber = this.roomNumberField.getText();
         
         
         try {
-            double pricePerDay = Double.parseDouble(pricePerDayField.getText());
-            boolean isSuccess = roomController.addRoom(roomNumber, pricePerDay);
+            double pricePerDay = Double.parseDouble(this.pricePerDayField.getText());
+            boolean isSuccess = this.roomController.addRoom(roomNumber, pricePerDay);
             
             if (isSuccess) {
                 JOptionPane.showMessageDialog(this, "Room added successfully!");

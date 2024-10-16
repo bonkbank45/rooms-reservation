@@ -36,11 +36,11 @@ public class EditRoomGUI extends javax.swing.JFrame {
         this.status = status;
         
         
-        jLabel2.setText(String.valueOf(this.roomId));
-        jTextField1.setText(this.roomNumber);
-        jTextField2.setText(String.valueOf(this.price_per_night));
+        this.jLabel2.setText(String.valueOf(this.roomId));
+        this.jTextField1.setText(this.roomNumber);
+        this.jTextField2.setText(String.valueOf(this.price_per_night));
         
-        jComboBox1.setSelectedItem(this.status);
+        this.jComboBox1.setSelectedItem(this.status);
     }
 
     /**
@@ -212,7 +212,10 @@ public class EditRoomGUI extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         try {
-            boolean isSuccess = roomController.editRoom(roomId, jTextField1.getText(), Double.valueOf(jTextField2.getText()), jComboBox1.getSelectedItem().toString() );
+            boolean isSuccess = this.roomController.editRoom(this.roomId, 
+                                    this.jTextField1.getText(), 
+                                    Double.valueOf(this.jTextField2.getText()), 
+                                    this.jComboBox1.getSelectedItem().toString() );
             if (isSuccess) {
                 JOptionPane.showMessageDialog(this, "Room edited successfully!");
                 this.roomController.displayTableRoom((DefaultTableModel) ReservedRoomGUI.showRoomTable.getModel());
