@@ -12,12 +12,14 @@ package models;
 public class Room {
     private final int roomId;
     private String roomNumber;
+    private String roomType;
     private double roomPrice;
     private String status;
 
-    public Room(int roomId, String roomNumber, double roomPrice, String status) {
+    public Room(int roomId, String roomNumber, String roomType, double roomPrice, String status) {
         this.roomId = roomId;
         this.setRoomNumber(roomNumber);
+        this.setRoomType(roomType);
         this.setRoomPrice(roomPrice);
         this.setStatus(status);
     }
@@ -28,6 +30,20 @@ public class Room {
 
     public String getRoomNumber() {
         return this.roomNumber;
+    }
+    
+    public String getRoomType() {
+        return this.roomType;
+    }
+    
+    public void setRoomType(String type) {
+        if (type == null || type.trim().isEmpty()) {
+            throw new IllegalArgumentException("Type can't be null or empty");
+        }
+        if (!type.equalsIgnoreCase("Single") && !type.equalsIgnoreCase("Double") ) {
+            throw new IllegalArgumentException("Invalid type room. Must be 'Single' or 'Double'");
+        }
+        this.roomType = type;
     }
     
     public void setRoomNumber(String roomNumber) {

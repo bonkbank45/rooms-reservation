@@ -11,7 +11,6 @@ import models.RoomDAOImpl;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -38,6 +37,7 @@ public class RoomController {
                 model.addRow(new Object[]{
                     room.getRoomId(),
                     room.getRoomNumber(),
+                    room.getRoomType(),
                     room.getRoomPrice(),
                     ((room.getStatus()).substring(0, 1)).toUpperCase() + 
                     (room.getStatus()).substring(1)
@@ -48,11 +48,11 @@ public class RoomController {
         }
     }
     
-    public boolean handleRoomAdding(String roomNumber, double pricePerDay) throws IllegalArgumentException {
+    public boolean handleRoomAdding(String roomNumber, String roomType, double pricePerDay) throws IllegalArgumentException {
         Room room;
         try {
-            room = new Room(9999999, roomNumber, pricePerDay, "Available");
-            boolean success = this.roomDAO.addRoom(room.getRoomNumber(), room.getRoomPrice());
+            room = new Room(9999999, roomNumber, roomType, pricePerDay, "Available");
+            boolean success = this.roomDAO.addRoom(room.getRoomNumber(), room.getRoomType(), room.getRoomPrice());
             
             if (success) {
                 this.updateRoomTable();
@@ -64,13 +64,14 @@ public class RoomController {
         return false;
     }
     
-    public boolean handleRoomEdition(int roomId, String newRoomNumber, Double newPrice, String newStatus) throws IllegalArgumentException {
+    public boolean handleRoomEdit(int roomId, String newRoomNumber, String newRoomType, Double newPrice, String newStatus) throws IllegalArgumentException {
         try {
             Room room = this.roomDAO.getRoomById(roomId);
             if (room == null) {
                 throw new IllegalArgumentException("Room not found with id: " + roomId);
             }
             room.setRoomNumber(newRoomNumber);
+            room.setRoomType(newRoomType);
             room.setRoomPrice(newPrice);
             room.setStatus(newStatus);
             
