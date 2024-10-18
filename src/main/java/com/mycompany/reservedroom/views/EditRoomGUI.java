@@ -6,7 +6,7 @@ package com.mycompany.reservedroom.views;
 
 import com.mycompany.reservedroom.controllers.RoomController;
 import javax.swing.JOptionPane;
-import models.Room;
+import models.room.Room;
 
 /**
  *

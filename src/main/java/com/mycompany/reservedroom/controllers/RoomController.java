@@ -5,9 +5,9 @@
 package com.mycompany.reservedroom.controllers;
 
 import com.mycompany.reservedroom.views.ReservedRoomGUI;
-import models.Room;
-import models.RoomDAO;
-import models.RoomDAOImpl;
+import models.room.Room;
+import models.room.RoomDAO;
+import models.room.RoomDAOImpl;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
