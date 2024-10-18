@@ -18,6 +18,9 @@ public class Customer {
     private String email;
     private String phoneNumber;
     
+    private static final String NAME_REGEX = "^[a-zA-Z]{3,}$";
+    private static final Pattern NAME_PATTERN = Pattern.compile(NAME_REGEX);
+    
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_.+\\-]+@[a-zA-Z0-9\\-]+\\.[a-zA-Z0-9\\-.]+$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
@@ -41,6 +44,9 @@ public class Customer {
         if (customerFname == null || customerFname.trim().isEmpty()) {
             throw new IllegalArgumentException("First name can't be null or empty");
         }
+        if (!NAME_PATTERN.matcher(customerFname).matches()) {
+            throw new IllegalArgumentException("First name must contain alphabet only.");
+        }
         this.customerFname = customerFname;
     }
 
@@ -51,6 +57,9 @@ public class Customer {
     public void setCustomerLname(String customerLname) {
         if (customerLname == null || customerLname.trim().isEmpty()) {
             throw new IllegalArgumentException("Last name can't be null or empty");
+        }
+        if (!NAME_PATTERN.matcher(customerLname).matches()) {
+            throw new IllegalArgumentException("Last name must contain alphabet only.");
         }
         this.customerLname = customerLname;
     }

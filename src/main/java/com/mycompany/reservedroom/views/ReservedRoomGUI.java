@@ -31,6 +31,8 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         this.roomController.setView(this);
         this.customerController = customerController;
         this.customerController.setView(this);
+        
+        this.customerController.updateCustomerTable();
     }
     
     public TableModel getShowRoomTable() {
@@ -194,6 +196,11 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         mainPanel.setLayout(new java.awt.CardLayout());
 
         jButton8.setText("Add Customer");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Edit Customer");
 
@@ -549,6 +556,11 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         card.show(this.mainPanel, "panel2");
         this.customerController.updateCustomerTable();
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        new AddCustomerGUI(this.customerController).setVisible(true);
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
      * @param args the command line arguments
