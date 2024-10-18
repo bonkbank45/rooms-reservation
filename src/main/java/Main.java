@@ -1,4 +1,5 @@
 
+import com.mycompany.reservedroom.controllers.CustomerController;
 import com.mycompany.reservedroom.views.ReservedRoomGUI;
 import com.mycompany.reservedroom.controllers.RoomController;
 
@@ -13,7 +14,7 @@ import com.mycompany.reservedroom.controllers.RoomController;
  */
 public class Main {
     public static void main(String[] args) {
-        ReservedRoomGUI mainGUI = new ReservedRoomGUI(new RoomController());
+        ReservedRoomGUI mainGUI = new ReservedRoomGUI(new RoomController(), new CustomerController());
         mainGUI.setVisible(true);
     }
 }

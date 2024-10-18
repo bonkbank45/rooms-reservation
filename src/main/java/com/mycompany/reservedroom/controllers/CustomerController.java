@@ -31,7 +31,7 @@ public class CustomerController {
     public void updateCustomerTable() {
         try {
             List<Customer> customerList = this.customerDAO.getAllCustomers();
-            DefaultTableModel model = (DefaultTableModel) viewMain.getShowRoomTable();
+            DefaultTableModel model = (DefaultTableModel) viewMain.getShowCustomerTable();
             model.setRowCount(0); // Clear existing rows
             for (Customer customer : customerList) {
                 model.addRow(new Object[]{

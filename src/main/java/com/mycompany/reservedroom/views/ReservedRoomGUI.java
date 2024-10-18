@@ -9,37 +9,45 @@ package com.mycompany.reservedroom.views;
  * @author thana
  */
 
-import com.mycompany.reservedroom.views.EditRoomGUI;
-import com.mycompany.reservedroom.views.AddRoomGUI;
+import com.mycompany.reservedroom.controllers.CustomerController;
 import com.mycompany.reservedroom.controllers.RoomController;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import models.room.Room;
 
 public class ReservedRoomGUI extends javax.swing.JFrame {
 
-    private final RoomController roomController; 
+    private final RoomController roomController;
+    private final CustomerController customerController;
     
     /**
      * Creates new form ReservedRoomGUI
-     * @param roomService
+     * @param roomController
      */
-    public ReservedRoomGUI(RoomController roomService) {
+    public ReservedRoomGUI(RoomController roomController, CustomerController customerController) {
         initComponents();
-        this.roomController = roomService;
+        this.roomController = roomController;
         this.roomController.setView(this);
-    }
-    
-    public void updateRoomTable(TableModel model) {
-        this.showRoomTable.setModel(model);
+        this.customerController = customerController;
+        this.customerController.setView(this);
     }
     
     public TableModel getShowRoomTable() {
         return this.showRoomTable.getModel();
     }
     
+    public void updateRoomTable(TableModel model) {
+        this.showRoomTable.setModel(model);
+    }
+    
+    public TableModel getShowCustomerTable() {
+        return this.showCustomerTable.getModel();
+    }
+    
+    public void updateCustomerTable(TableModel model) {
+        this.showCustomerTable.setModel(model);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -62,13 +70,13 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
-        panel2 = new javax.swing.JPanel();
+        customerPanel = new javax.swing.JPanel();
         jButton8 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        panel1 = new javax.swing.JPanel();
+        showCustomerTable = new javax.swing.JTable();
+        roomPanel = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -191,7 +199,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
 
         jButton9.setText("Delete Customer");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        showCustomerTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -202,17 +210,17 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                 "Customer Id", "First Name", "Last Name", "Email", "Phone Number"
             }
         ));
-        jTable2.setPreferredSize(new java.awt.Dimension(456, 406));
-        jScrollPane4.setViewportView(jTable2);
+        showCustomerTable.setPreferredSize(new java.awt.Dimension(456, 406));
+        jScrollPane4.setViewportView(showCustomerTable);
 
-        javax.swing.GroupLayout panel2Layout = new javax.swing.GroupLayout(panel2);
-        panel2.setLayout(panel2Layout);
-        panel2Layout.setHorizontalGroup(
-            panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout customerPanelLayout = new javax.swing.GroupLayout(customerPanel);
+        customerPanel.setLayout(customerPanelLayout);
+        customerPanelLayout.setHorizontalGroup(
+            customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(customerPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel2Layout.createSequentialGroup()
+                .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(customerPanelLayout.createSequentialGroup()
                         .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -222,11 +230,11 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                     .addComponent(jScrollPane4))
                 .addContainerGap())
         );
-        panel2Layout.setVerticalGroup(
-            panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel2Layout.createSequentialGroup()
+        customerPanelLayout.setVerticalGroup(
+            customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(customerPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -234,7 +242,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE))
         );
 
-        mainPanel.add(panel2, "panel2");
+        mainPanel.add(customerPanel, "panel2");
 
         jButton5.setText("Add Room");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -285,15 +293,15 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
-        panel1.setLayout(panel1Layout);
-        panel1Layout.setHorizontalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout roomPanelLayout = new javax.swing.GroupLayout(roomPanel);
+        roomPanel.setLayout(roomPanelLayout);
+        roomPanelLayout.setHorizontalGroup(
+            roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roomPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 824, Short.MAX_VALUE)
-                    .addGroup(panel1Layout.createSequentialGroup()
+                    .addGroup(roomPanelLayout.createSequentialGroup()
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -301,11 +309,11 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
-        panel1Layout.setVerticalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel1Layout.createSequentialGroup()
+        roomPanelLayout.setVerticalGroup(
+            roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roomPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -313,7 +321,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE))
         );
 
-        mainPanel.add(panel1, "panel1");
+        mainPanel.add(roomPanel, "panel1");
 
         jSplitPane2.setRightComponent(mainPanel);
 
@@ -539,7 +547,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         CardLayout card = (CardLayout) this.mainPanel.getLayout();
         card.show(this.mainPanel, "panel2");
-//        this.roomController.updateRoomTable();
+        this.customerController.updateCustomerTable();
     }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
@@ -581,6 +589,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel DateContainer;
     private javax.swing.JPanel DisplayRoomContainer;
+    private javax.swing.JPanel customerPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -607,15 +616,14 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private com.toedter.calendar.JYearChooser jYearChooser1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel manageDataTab;
-    private javax.swing.JPanel panel1;
-    private javax.swing.JPanel panel2;
     private javax.swing.JPanel roomBookingTab;
     private javax.swing.JPanel roomCheckInTab;
     private javax.swing.JPanel roomCheckOutTab;
+    private javax.swing.JPanel roomPanel;
+    private javax.swing.JTable showCustomerTable;
     public javax.swing.JTable showRoomTable;
     // End of variables declaration//GEN-END:variables
 }
