@@ -239,7 +239,6 @@ public class EditRoomGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
         try {
             boolean success = this.roomController.handleRoomEdit(this.room.getRoomId(), 
                                     this.jTextField1.getText(),
@@ -256,7 +255,6 @@ public class EditRoomGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Invalid Input", JOptionPane.ERROR_MESSAGE);
             System.out.println("Error: " + e.getMessage());
         }
-        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

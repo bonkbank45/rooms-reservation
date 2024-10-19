@@ -14,6 +14,7 @@ import com.mycompany.reservedroom.controllers.RoomController;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
+import models.customer.Customer;
 import models.room.Room;
 
 public class ReservedRoomGUI extends javax.swing.JFrame {
@@ -203,6 +204,11 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         });
 
         jButton2.setText("Edit Customer");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton9.setText("Delete Customer");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
@@ -577,6 +583,24 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
             } 
         }
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = this.showCustomerTable.getSelectedRow();
+        
+        if (selectedRow != -1) {
+            int customerId = (int) this.showCustomerTable.getValueAt(selectedRow, 0);
+            String customerFname = this.showCustomerTable.getValueAt(selectedRow, 1).toString();
+            String customerLname = this.showCustomerTable.getValueAt(selectedRow, 2).toString();
+            String email = this.showCustomerTable.getValueAt(selectedRow, 3).toString();
+            String phoneNumber = this.showCustomerTable.getValueAt(selectedRow, 4).toString();
+            Customer selectedCustomer = new Customer(customerId, customerFname, customerLname, email, phoneNumber);
+            new EditCustomerGUI(selectedCustomer, this.customerController).setVisible(true);
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select a row to edit.");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

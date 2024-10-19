@@ -71,8 +71,8 @@ public class CustomerController {
             throw new IllegalArgumentException("Customer not found with id: " + customerId);
         }
         
-        customer.setCustomerFname(newFirstName);
-        customer.setCustomerLname(newLastName);
+        customer.setCustomerFname(StringUtils.capitalize(newFirstName));
+        customer.setCustomerLname(StringUtils.capitalize(newLastName));
         customer.setEmail(newEmail);
         customer.setPhoneNumber(newPhoneNumber);
         
