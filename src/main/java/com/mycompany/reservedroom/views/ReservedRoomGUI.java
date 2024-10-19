@@ -205,6 +205,11 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         jButton2.setText("Edit Customer");
 
         jButton9.setText("Delete Customer");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
 
         showCustomerTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -527,7 +532,6 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 this.roomController.handleRoomDeletion(roomId);
-//                this.roomController.displayTableRoom((DefaultTableModel) ReservedRoomGUI.showRoomTable.getModel());
             } 
         }
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -551,16 +555,28 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
         CardLayout card = (CardLayout) this.mainPanel.getLayout();
         card.show(this.mainPanel, "panel2");
         this.customerController.updateCustomerTable();
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
         new AddCustomerGUI(this.customerController).setVisible(true);
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        int selectedRow = this.showCustomerTable.getSelectedRow();
+        if (selectedRow != -1) {
+            int roomId = (int) this.showCustomerTable.getValueAt(selectedRow, 0);
+            int confirm = JOptionPane.showConfirmDialog(this, 
+                "Are you sure to delete this customer?", 
+                "Confirm", 
+                JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                this.customerController.handleCustomerDeletion(roomId);
+            } 
+        }
+    }//GEN-LAST:event_jButton9ActionPerformed
 
     /**
      * @param args the command line arguments

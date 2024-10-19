@@ -4,6 +4,7 @@
  */
 package com.mycompany.reservedroom.controllers;
 
+import org.apache.commons.lang3.StringUtils;
 import com.mycompany.reservedroom.views.ReservedRoomGUI;
 import java.sql.SQLException;
 import java.util.List;
@@ -50,7 +51,7 @@ public class CustomerController {
     public boolean handleCustomerAdding(String customerFname, String customerLname, String email, String phoneNumber) throws IllegalArgumentException {
         Customer customer;
         try {
-            customer = new Customer(9999999, customerFname, customerLname, email, phoneNumber);
+            customer = new Customer(9999999, StringUtils.capitalize(customerFname), StringUtils.capitalize(customerLname), email, phoneNumber);
             boolean success = this.customerDAO.addCustomer(customer.getCustomerFname(), customer.getCustomerLname(), customer.getEmail(), customer.getPhoneNumber());
             
             if (success) {

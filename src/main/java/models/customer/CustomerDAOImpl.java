@@ -12,9 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import models.ConnectionDbManager;
-import models.room.Room;
 
 /**
  *
@@ -88,7 +86,7 @@ public class CustomerDAOImpl implements CustomerDAO{
             PreparedStatement pst = conn.prepareStatement(query)) {
 
             pst.setString(1, customerFname);
-            pst.setString(2, customerFname);
+            pst.setString(2, customerLname);
             pst.setString(3, email);
             pst.setString(4, phoneNumber);
 
