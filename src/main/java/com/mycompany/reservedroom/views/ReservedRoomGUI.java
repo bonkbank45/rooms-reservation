@@ -44,12 +44,16 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         this.showRoomTable.setModel(model);
     }
     
-    public TableModel getShowCustomerTable() {
-        return this.showCustomerTable.getModel();
+    public TableModel getManageCustomerTable() {
+        return this.manageCustomerTable.getModel();
+    }
+    
+    public TableModel getBookingCustomerTable() {
+        return this.bookingCustomerTable.getModel();
     }
     
     public void updateCustomerTable(TableModel model) {
-        this.showCustomerTable.setModel(model);
+        this.manageCustomerTable.setModel(model);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -70,10 +74,10 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         jRadioButton2 = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jButton10 = new javax.swing.JButton();
+        searchRoomButton = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jButton11 = new javax.swing.JButton();
+        roomTable = new javax.swing.JTable();
+        selectRoomButton = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -84,14 +88,14 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jButton13 = new javax.swing.JButton();
+        searchCustomerButton = new javax.swing.JButton();
         jLabel22 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        firstNameField = new javax.swing.JTextField();
+        lastNameField = new javax.swing.JTextField();
+        emailFieldName = new javax.swing.JTextField();
+        phoneNumberField = new javax.swing.JTextField();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        bookingCustomerTable = new javax.swing.JTable();
         jButton16 = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -127,7 +131,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        showCustomerTable = new javax.swing.JTable();
+        manageCustomerTable = new javax.swing.JTable();
         roomPanel = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
@@ -136,6 +140,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Room Reservation Program");
 
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 5, true));
 
@@ -149,10 +154,10 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel5.setText("Search Room Available");
 
-        jButton10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton10.setText("Search");
+        searchRoomButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        searchRoomButton.setText("Search");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        roomTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -171,13 +176,13 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane5.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setResizable(false);
-            jTable2.getColumnModel().getColumn(1).setResizable(false);
+        jScrollPane5.setViewportView(roomTable);
+        if (roomTable.getColumnModel().getColumnCount() > 0) {
+            roomTable.getColumnModel().getColumn(0).setResizable(false);
+            roomTable.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        jButton11.setText("Select Room");
+        selectRoomButton.setText("Select Room");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("Room :");
@@ -201,10 +206,10 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jRadioButton2)
                         .addGap(26, 26, 26)
-                        .addComponent(jButton10))
+                        .addComponent(searchRoomButton))
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton11)
+                        .addComponent(selectRoomButton)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -220,12 +225,12 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jRadioButton1)
                     .addComponent(jRadioButton2)
-                    .addComponent(jButton10))
+                    .addComponent(searchRoomButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton11)
+                    .addComponent(selectRoomButton)
                     .addComponent(jLabel6)
                     .addComponent(jLabel7))
                 .addContainerGap())
@@ -238,35 +243,41 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
 
         jButton12.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton12.setText("Add New Customer");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
 
         jLabel21.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel21.setLabelFor(phoneNumberField);
         jLabel21.setText("Phone Number :");
 
         jLabel20.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel20.setLabelFor(emailFieldName);
         jLabel20.setText("Email :");
 
         jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel19.setLabelFor(lastNameField);
         jLabel19.setText("Last Name :");
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel18.setLabelFor(firstNameField);
         jLabel18.setText("First Name :");
 
-        jButton13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton13.setText("Search");
+        searchCustomerButton.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        searchCustomerButton.setText("Search");
+        searchCustomerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchCustomerButtonActionPerformed(evt);
+            }
+        });
 
         jLabel22.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(255, 51, 51));
         jLabel22.setText("* Filling in all fields is not mandatory.");
 
-        jTextField1.setText("jTextField1");
-
-        jTextField2.setText("jTextField2");
-
-        jTextField3.setText("jTextField3");
-
-        jTextField4.setText("jTextField4");
-
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        bookingCustomerTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -285,15 +296,15 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane6.setViewportView(jTable3);
-        if (jTable3.getColumnModel().getColumnCount() > 0) {
-            jTable3.getColumnModel().getColumn(0).setResizable(false);
-            jTable3.getColumnModel().getColumn(1).setResizable(false);
-            jTable3.getColumnModel().getColumn(2).setResizable(false);
-            jTable3.getColumnModel().getColumn(3).setResizable(false);
+        jScrollPane6.setViewportView(bookingCustomerTable);
+        if (bookingCustomerTable.getColumnModel().getColumnCount() > 0) {
+            bookingCustomerTable.getColumnModel().getColumn(0).setResizable(false);
+            bookingCustomerTable.getColumnModel().getColumn(1).setResizable(false);
+            bookingCustomerTable.getColumnModel().getColumn(2).setResizable(false);
+            bookingCustomerTable.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        jButton16.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton16.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jButton16.setText("Select");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
@@ -315,12 +326,12 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                             .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField4))
+                            .addComponent(firstNameField)
+                            .addComponent(lastNameField)
+                            .addComponent(emailFieldName)
+                            .addComponent(phoneNumberField, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jButton13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(searchCustomerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jButton16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -332,20 +343,20 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel18)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(firstNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel19)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lastNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel20)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(emailFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel21)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jButton13))
+                            .addComponent(phoneNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(searchCustomerButton))
                 .addGap(9, 9, 9)
                 .addComponent(jLabel22)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -677,7 +688,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
             }
         });
 
-        showCustomerTable.setModel(new javax.swing.table.DefaultTableModel(
+        manageCustomerTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -688,8 +699,8 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                 "Customer Id", "First Name", "Last Name", "Email", "Phone Number"
             }
         ));
-        showCustomerTable.setPreferredSize(new java.awt.Dimension(456, 406));
-        jScrollPane4.setViewportView(showCustomerTable);
+        manageCustomerTable.setPreferredSize(new java.awt.Dimension(456, 406));
+        jScrollPane4.setViewportView(manageCustomerTable);
 
         javax.swing.GroupLayout customerPanelLayout = new javax.swing.GroupLayout(customerPanel);
         customerPanel.setLayout(customerPanelLayout);
@@ -865,9 +876,9 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        int selectedRow = this.showCustomerTable.getSelectedRow();
+        int selectedRow = this.manageCustomerTable.getSelectedRow();
         if (selectedRow != -1) {
-            int roomId = (int) this.showCustomerTable.getValueAt(selectedRow, 0);
+            int roomId = (int) this.manageCustomerTable.getValueAt(selectedRow, 0);
             int confirm = JOptionPane.showConfirmDialog(this,
                 "Are you sure to delete this customer?",
                 "Confirm",
@@ -880,14 +891,14 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        int selectedRow = this.showCustomerTable.getSelectedRow();
+        int selectedRow = this.manageCustomerTable.getSelectedRow();
 
         if (selectedRow != -1) {
-            int customerId = (int) this.showCustomerTable.getValueAt(selectedRow, 0);
-            String customerFname = this.showCustomerTable.getValueAt(selectedRow, 1).toString();
-            String customerLname = this.showCustomerTable.getValueAt(selectedRow, 2).toString();
-            String email = this.showCustomerTable.getValueAt(selectedRow, 3).toString();
-            String phoneNumber = this.showCustomerTable.getValueAt(selectedRow, 4).toString();
+            int customerId = (int) this.manageCustomerTable.getValueAt(selectedRow, 0);
+            String customerFname = this.manageCustomerTable.getValueAt(selectedRow, 1).toString();
+            String customerLname = this.manageCustomerTable.getValueAt(selectedRow, 2).toString();
+            String email = this.manageCustomerTable.getValueAt(selectedRow, 3).toString();
+            String phoneNumber = this.manageCustomerTable.getValueAt(selectedRow, 4).toString();
             Customer selectedCustomer = new Customer(customerId, customerFname, customerLname, email, phoneNumber);
             new EditCustomerGUI(selectedCustomer, this.customerController).setVisible(true);
 
@@ -910,8 +921,29 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         CardLayout card = (CardLayout) this.mainPanel.getLayout();
         card.show(this.mainPanel, "panel1");
         this.roomController.updateRoomTable();
-        //        this.updateRoomTable(this.showRoomTable.getModel());
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        // TODO add your handling code here:
+        new AddCustomerGUI(this.customerController).setVisible(true);
+    }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void searchCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchCustomerButtonActionPerformed
+        // TODO add your handling code here:
+        String firstNameFieldValue = this.firstNameField.getText();
+        String lastNameFieldValue = this.lastNameField.getText();
+        String emailFieldValue = this.emailFieldName.getText();
+        String phoneNumberFieldValue = this.phoneNumberField.getText();
+        
+        try {
+            boolean success = this.customerController.handleCustomerSearching(firstNameFieldValue, lastNameFieldValue, emailFieldValue, phoneNumberFieldValue);
+            if (!success) {
+                JOptionPane.showMessageDialog(this, "Not found customer.");
+            }
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_searchCustomerButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -950,13 +982,13 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable bookingCustomerTable;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JPanel customerPanel;
+    private javax.swing.JTextField emailFieldName;
+    private javax.swing.JTextField firstNameField;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton2;
@@ -1010,19 +1042,19 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField lastNameField;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JTable manageCustomerTable;
     private javax.swing.JPanel manageDataTab;
+    private javax.swing.JTextField phoneNumberField;
     private javax.swing.JPanel roomBookingTab;
     private javax.swing.JPanel roomCheckInTab;
     private javax.swing.JPanel roomCheckOutTab;
     private javax.swing.JPanel roomPanel;
-    private javax.swing.JTable showCustomerTable;
-    private javax.swing.JTable showRoomTable;
+    private javax.swing.JTable roomTable;
+    private javax.swing.JButton searchCustomerButton;
+    private javax.swing.JButton searchRoomButton;
+    private javax.swing.JButton selectRoomButton;
+    public javax.swing.JTable showRoomTable;
     // End of variables declaration//GEN-END:variables
 }

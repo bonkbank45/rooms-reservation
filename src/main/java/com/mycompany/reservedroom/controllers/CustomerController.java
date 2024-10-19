@@ -32,7 +32,7 @@ public class CustomerController {
     public void updateCustomerTable() {
         try {
             List<Customer> customerList = this.customerDAO.getAllCustomers();
-            DefaultTableModel model = (DefaultTableModel) viewMain.getShowCustomerTable();
+            DefaultTableModel model = (DefaultTableModel) viewMain.getManageCustomerTable();
             model.setRowCount(0); // Clear existing rows
             for (Customer customer : customerList) {
                 model.addRow(new Object[]{
@@ -48,10 +48,29 @@ public class CustomerController {
         }
     }
     
-    public boolean handleCustomerAdding(String customerFname, String customerLname, String email, String phoneNumber) throws IllegalArgumentException {
+    public boolean handleCustomerSearching(String firstName, String lastName, String email, String phoneNumber) {
+        List<Customer> customers;
+        customers = this.customerDAO.searchCustomer(firstName, lastName, email, phoneNumber);
+        if (!customers.isEmpty()) {
+            DefaultTableModel model = (DefaultTableModel) viewMain.getBookingCustomerTable();
+            model.setRowCount(0);
+            for (Customer customer : customers) {
+                model.addRow(new Object[]{
+                    customer.getCustomerFname(),
+                    customer.getCustomerLname(),
+                    customer.getEmail(),
+                    customer.getPhoneNumber()
+                });
+            }
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean handleCustomerAdding(String firstName, String lastName, String email, String phoneNumber) throws IllegalArgumentException {
         Customer customer;
         try {
-            customer = new Customer(9999999, StringUtils.capitalize(customerFname), StringUtils.capitalize(customerLname), email, phoneNumber);
+            customer = new Customer(9999999, StringUtils.capitalize(firstName), StringUtils.capitalize(lastName), email, phoneNumber);
             boolean success = this.customerDAO.addCustomer(customer.getCustomerFname(), customer.getCustomerLname(), customer.getEmail(), customer.getPhoneNumber());
             
             if (success) {

@@ -14,6 +14,7 @@ import java.util.List;
 public interface CustomerDAO {
     Customer getCustomerById(int customerId) throws SQLException;
     List<Customer> getAllCustomers() throws SQLException;
+    List<Customer> searchCustomer(String firstName, String lastName, String email, String phoneNumber);
     boolean addCustomer(String customerFname, String customerLname, String email, String phoneNumber) throws SQLException;
     boolean editCustomer(Customer customer) throws SQLException;
     boolean destroyCustomer(int customerId) throws SQLException;

@@ -79,6 +79,60 @@ public class CustomerDAOImpl implements CustomerDAO{
     }
     
     @Override
+    public List<Customer> searchCustomer(String firstName, String lastName, String email, String phoneNumber) throws IllegalArgumentException {
+        StringBuilder query = new StringBuilder("SELECT * FROM customers WHERE 1=1");
+        List<Object> parameters = new ArrayList<>();
+        if (firstName != null & !firstName.isEmpty()) {
+            query.append(" AND first_name LIKE ?");
+            parameters.add(firstName + "%");
+        }
+        
+        if (lastName != null & !lastName.isEmpty()) {
+            query.append(" AND last_name LIKE ?");
+            parameters.add(lastName + "%");
+        }
+        
+        if (email != null & !email.isEmpty()) {
+            query.append(" AND email = ?");
+            parameters.add(email);
+        }
+        
+        if (phoneNumber != null & !phoneNumber.isEmpty()) {
+            query.append(" AND phone_number = ?");
+            parameters.add(phoneNumber);
+        }
+        
+        if (parameters.isEmpty()) {
+            throw new IllegalArgumentException("At least one search parameter must be provided.");
+        }
+        
+        List<Customer> customers = new ArrayList<>();
+        
+        try (Connection conn = new ConnectionDbManager().getConnection()) {
+            PreparedStatement pst = conn.prepareStatement(query.toString());
+            
+            for (int i = 0; i < parameters.size(); i++) {
+                pst.setObject(i + 1, parameters.get(i));
+            }
+            
+            ResultSet rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                customers.add(new Customer(
+                    rs.getInt("customer_id"),
+                    rs.getString("first_name"),
+                    rs.getString("last_name"),
+                    rs.getString("email"),
+                    rs.getString("phone_number")
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return customers;
+    }
+    
+    @Override
     public boolean addCustomer(String customerFname, String customerLname, String email, String phoneNumber) throws SQLException {
         String query = "INSERT INTO customers (first_name, last_name, email, phone_number) VALUES (?, ?, ?, ?)";
 
