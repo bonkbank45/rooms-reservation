@@ -20,6 +20,15 @@ public class AddCustomerGUI extends javax.swing.JFrame {
     public AddCustomerGUI(CustomerController customerController) {
         initComponents();
         this.customerController = customerController;
+        this.customerController.setAddCustomerGUI(this);
+    }
+    
+    public void showInfoMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Infomation", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     /**
@@ -162,30 +171,16 @@ public class AddCustomerGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
         String firstName = this.firstNameField.getText();
         String lastName = this.lastNameField.getText();
         String email = this.emailField.getText();
         String phoneNumber = this.phoneNumberField.getText();
-        
-        try {
-            boolean success = this.customerController.handleCustomerAdding(firstName, lastName, email, phoneNumber);
-            if (success) {
-                JOptionPane.showMessageDialog(this, "Customer added successfully!");
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to add customer.");
-            }
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, 
-                    e.getMessage(), "Invalid Input", 
-                    JOptionPane.ERROR_MESSAGE);
-        }
+
+        this.customerController.handleCustomerAdding(firstName, lastName, email, phoneNumber);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

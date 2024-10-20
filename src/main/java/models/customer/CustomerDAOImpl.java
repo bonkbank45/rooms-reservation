@@ -150,10 +150,7 @@ public class CustomerDAOImpl implements CustomerDAO{
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
         return false;
-
-
     }
     
     @Override

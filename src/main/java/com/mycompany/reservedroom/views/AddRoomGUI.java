@@ -6,7 +6,6 @@ package com.mycompany.reservedroom.views;
 
 import com.mycompany.reservedroom.controllers.RoomController;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,6 +20,14 @@ public class AddRoomGUI extends javax.swing.JFrame {
     public AddRoomGUI(RoomController roomController) {
         initComponents();
         this.roomController = roomController;
+    }
+    
+    public void showInfoMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
     
 
@@ -184,23 +191,7 @@ public class AddRoomGUI extends javax.swing.JFrame {
         String roomType = this.roomTypeField.getSelectedItem().toString();
         double pricePerDay = Double.parseDouble(this.pricePerDayField.getText());
         
-        try {
-            boolean success = this.roomController.handleRoomAdding(roomNumber, roomType, pricePerDay);
-            if (success) {
-                JOptionPane.showMessageDialog(this, "Room added successfully!");
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to add room.");
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, 
-                    "Price must be a valid number!", "Invalid Input", 
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, 
-                    e.getMessage(), "Invalid Input", 
-                    JOptionPane.ERROR_MESSAGE);
-        }
+        this.roomController.handleRoomAdding(roomNumber, roomType, pricePerDay);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void pricePerDayFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pricePerDayFieldActionPerformed

@@ -4,13 +4,14 @@
  */
 package com.mycompany.reservedroom.controllers;
 
+import com.mycompany.reservedroom.views.AddRoomGUI;
+import com.mycompany.reservedroom.views.EditRoomGUI;
 import com.mycompany.reservedroom.views.ReservedRoomGUI;
 import models.room.Room;
 import models.room.RoomDAO;
 import models.room.RoomDAOImpl;
 import java.sql.SQLException;
 import java.util.List;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,7 +20,9 @@ import javax.swing.table.DefaultTableModel;
 public class RoomController {
     private final RoomDAO roomDAO;
     private ReservedRoomGUI viewMain;
-    
+    private AddRoomGUI viewAddRoom;
+    private EditRoomGUI viewEditRoom;
+        
     public RoomController() {
         this.roomDAO = new RoomDAOImpl();
     }
@@ -28,47 +31,60 @@ public class RoomController {
         this.viewMain = view;
     }
     
-    public void updateRoomTable() {
+    public void setAddCustomerGUI(AddRoomGUI view) {
+        this.viewAddRoom = view;
+    }
+    
+    public void setEditCustomerGUI(EditRoomGUI view) {
+        this.viewEditRoom = view;
+    }
+    
+    public void refreshManageRoomTable() {
         try {
             List<Room> roomList = this.roomDAO.getAllRooms();
-            DefaultTableModel model = (DefaultTableModel) viewMain.getShowRoomTable();
-            model.setRowCount(0); // Clear existing rows
-            for (Room room : roomList) {
-                model.addRow(new Object[]{
-                    room.getRoomId(),
-                    room.getRoomNumber(),
-                    room.getRoomType(),
-                    room.getRoomPrice(),
-                    ((room.getStatus()).substring(0, 1)).toUpperCase() + 
-                    (room.getStatus()).substring(1)
-                });
+            this.viewMain.updateManageRoomTable(roomList);
+        } catch (SQLException e) {
+            this.viewMain.showErrorMessage("Error retrieving room data: " + e.getMessage());
+        }
+    }
+
+    public void handleSearchRoomAvailableByType(String type) {
+        try {
+            List<Room> rooms = this.roomDAO.getRoomAvailableByType(type);
+            this.viewMain.updateBookingRoomTable(rooms);
+            if (rooms.isEmpty()) {
+                viewMain.showInfoMessage("No available rooms found for the selected type.");
             }
         } catch (SQLException e) {
-            System.out.println("Error displaying room table: " + e.getMessage());
+            this.viewMain.showErrorMessage("Error searching for available rooms: " + e.getMessage());
         }
     }
     
-    public boolean handleRoomAdding(String roomNumber, String roomType, double pricePerDay) throws IllegalArgumentException {
+    public void handleRoomAdding(String roomNumber, String roomType, double pricePerDay) throws IllegalArgumentException {
         Room room;
         try {
             room = new Room(9999999, roomNumber, roomType, pricePerDay, "Available");
             boolean success = this.roomDAO.addRoom(room.getRoomNumber(), room.getRoomType(), room.getRoomPrice());
             
             if (success) {
-                this.updateRoomTable();
-                return true;
+                this.refreshManageRoomTable();
+                this.viewAddRoom.showInfoMessage("Room added successfully!");
+                this.viewAddRoom.dispose();
+            } else {
+                this.viewAddRoom.showErrorMessage("Failed to add room.");
             }
         } catch (SQLException e) {
             System.out.println("Error adding room: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            this.viewAddRoom.showErrorMessage(e.getMessage());
         }
-        return false;
     }
     
-    public boolean handleRoomEdit(int roomId, String newRoomNumber, String newRoomType, Double newPrice, String newStatus) throws IllegalArgumentException {
+    public void handleRoomEdit(int roomId, String newRoomNumber, String newRoomType, Double newPrice, String newStatus) throws IllegalArgumentException {
         try {
             Room room = this.roomDAO.getRoomById(roomId);
             if (room == null) {
-                throw new IllegalArgumentException("Room not found with id: " + roomId);
+                this.viewEditRoom.showErrorMessage("Room not found with id: " + roomId);
             }
             room.setRoomNumber(newRoomNumber);
             room.setRoomType(newRoomType);
@@ -77,25 +93,29 @@ public class RoomController {
             
             boolean success = this.roomDAO.editRoom(room);
             if (success) {
-                this.updateRoomTable();
-                return true;
+                this.refreshManageRoomTable();
+                this.viewEditRoom.showInfoMessage("Room edited successfully!");
+                this.viewEditRoom.dispose();
+            } else {
+                this.viewEditRoom.showErrorMessage("Failed to edit room.");
             }
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            this.viewEditRoom.showErrorMessage(e.getMessage());
         }
-        return false;
     }
     
-    public boolean handleRoomDeletion(int roomId) {
+    public void handleRoomDeletion(int roomId) {
         try {
             boolean success = this.roomDAO.destroyRoom(roomId);
             if (success) {
-                this.updateRoomTable();
-                return true;
+                this.refreshManageRoomTable();
+                this.viewMain.showInfoMessage("Delete Room ID: " + roomId + " completed.");
             }
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
+            this.viewMain.showErrorMessage("Failed to delete room ID: " + roomId);
         }
-        return false;
     }
 }

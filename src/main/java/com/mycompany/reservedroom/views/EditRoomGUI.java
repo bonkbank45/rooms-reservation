@@ -21,21 +21,8 @@ public class EditRoomGUI extends javax.swing.JFrame {
 //    final double price_per_night;
 //    final String status;
     
-    /**
-     * Creates new form EditRoomGUI
-     * @param roomId
-     * @param roomNumber
-     * @param price_per_night
-     * @param status
-     * @param roomService
-     */
     public EditRoomGUI(Room room, RoomController roomController) {
         initComponents();
-//        this.roomId = roomId;
-//        this.roomNumber = roomNumber;
-//        this.roomType = roomType;
-//        this.price_per_night = price_per_night;
-//        this.status = status;
         this.room = room;
         this.roomController = roomController;
         
@@ -45,6 +32,14 @@ public class EditRoomGUI extends javax.swing.JFrame {
         
         this.jComboBox1.setSelectedItem(this.room.getStatus());
         this.jComboBox2.setSelectedItem(this.room.getRoomType());
+    }
+    
+    public void showInfoMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     /**
@@ -239,22 +234,11 @@ public class EditRoomGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            boolean success = this.roomController.handleRoomEdit(this.room.getRoomId(), 
+        this.roomController.handleRoomEdit(this.room.getRoomId(), 
                                     this.jTextField1.getText(),
                                     this.jComboBox2.getSelectedItem().toString(),
                                     Double.valueOf(this.jTextField2.getText()), 
                                     this.jComboBox1.getSelectedItem().toString() );
-            if (success) {
-                JOptionPane.showMessageDialog(this, "Room edited successfully!");
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to edit room.");
-            }
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Invalid Input", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Error: " + e.getMessage());
-        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

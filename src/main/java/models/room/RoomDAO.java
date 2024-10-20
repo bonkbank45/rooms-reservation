@@ -15,7 +15,7 @@ import javax.swing.table.TableModel;
 public interface RoomDAO {
     Room getRoomById(int roomId) throws SQLException;
     List<Room> getAllRooms() throws SQLException;
-//    TableModel getRoomTableModel() throws SQLException;
+    List<Room> getRoomAvailableByType(String type) throws SQLException;
     boolean addRoom(String roomNumber, String roomType, double pricePerDay) throws SQLException;
     boolean editRoom(Room room) throws SQLException;
     boolean destroyRoom(int RoomId) throws SQLException;

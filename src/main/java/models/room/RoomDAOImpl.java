@@ -79,34 +79,33 @@ public class RoomDAOImpl implements RoomDAO {
         return roomList;
     }
     
-//    @Override
-//    public TableModel getRoomTableModel() {
-//        DefaultTableModel table = new DefaultTableModel();
-//        table.addColumn("Room ID");
-//        table.addColumn("Room Number");
-//        table.addColumn("Price");
-//        table.addColumn("Status");
-//        try {
-//            List<Room> roomList = this.getAllRooms();
-//            for (Room room : roomList) {
-//                table.addRow(new Object[]{
-//                    room.getRoomId(),
-//                    room.getRoomNumber(),
-//                    room.getRoomPrice(),
-//                    ((room.getStatus()).substring(0, 1)).toUpperCase() + 
-//                    (room.getStatus()).substring(1)
-//                });
-//            }
-//            return table;
-//        } catch (SQLException e) {
-//            System.out.println("Error displaying room table: " + e.getMessage());
-//        }
-//        return null;
-//    }
+    @Override
+    public List<Room> getRoomAvailableByType(String type) {
+        List<Room> rooms = new ArrayList<>();
+        String query = "SELECT room_id, room_number, room_type, price_per_night, status FROM rooms WHERE room_type = ? AND status = 'Available'";
+        
+        try (Connection conn = new ConnectionDbManager().getConnection()) {
+            PreparedStatement pst = conn.prepareStatement(query);
+            
+            pst.setString(1, type);
+            ResultSet rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                rooms.add(new Room(rs.getInt("room_id"), 
+                        rs.getString("room_number"), 
+                        rs.getString("room_type"), 
+                        rs.getDouble("price_per_night"), 
+                        rs.getString("status")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return rooms;
+    }
     
     @Override
     public boolean addRoom(String roomNumber, String roomType, double pricePerDay) throws SQLException {
-        String query = "INSERT INTO rooms (room_number, room_type, price_per_night, status) VALUES (?, ?, ?, 'available')";
+        String query = "INSERT INTO rooms (room_number, room_type, price_per_night, status) VALUES (?, ?, ?, 'Available')";
         
         try (Connection conn = new ConnectionDbManager().getConnection();
              PreparedStatement pst = conn.prepareStatement(query)) {

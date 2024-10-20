@@ -4,11 +4,11 @@
  */
 package com.mycompany.reservedroom.controllers;
 
+import com.mycompany.reservedroom.views.*;
 import org.apache.commons.lang3.StringUtils;
 import com.mycompany.reservedroom.views.ReservedRoomGUI;
 import java.sql.SQLException;
 import java.util.List;
-import javax.swing.table.DefaultTableModel;
 import models.customer.Customer;
 import models.customer.CustomerDAO;
 import models.customer.CustomerDAOImpl;
@@ -20,6 +20,8 @@ import models.customer.CustomerDAOImpl;
 public class CustomerController {
     private final CustomerDAO customerDAO;
     private ReservedRoomGUI viewMain;
+    private AddCustomerGUI viewAddCustomer;
+    private EditCustomerGUI viewEditCustomer;
     
     public CustomerController() {
         this.customerDAO = new CustomerDAOImpl();
@@ -29,94 +31,93 @@ public class CustomerController {
         this.viewMain = view;
     }
     
-    public void updateCustomerTable() {
+    public void setAddCustomerGUI(AddCustomerGUI view) {
+        this.viewAddCustomer = view;
+    }
+    
+    public void setEditCustomerGUI(EditCustomerGUI view) {
+        this.viewEditCustomer = view;
+    }
+    
+    public void refreshManageCustomerTable() {
         try {
             List<Customer> customerList = this.customerDAO.getAllCustomers();
-            DefaultTableModel model = (DefaultTableModel) viewMain.getManageCustomerTable();
-            model.setRowCount(0); // Clear existing rows
-            for (Customer customer : customerList) {
-                model.addRow(new Object[]{
-                    customer.getCustomerId(),
-                    customer.getCustomerFname(),
-                    customer.getCustomerLname(),
-                    customer.getEmail(),
-                    customer.getPhoneNumber()
-                });
-            }
+            viewMain.updateManageCustomerTable(customerList);
         } catch (SQLException e) {
-            System.out.println("Error displaying customer table: " + e.getMessage());
+            viewMain.showErrorMessage("Error retrieving customer data: " + e.getMessage());
         }
     }
     
-    public boolean handleCustomerSearching(String firstName, String lastName, String email, String phoneNumber) {
-        List<Customer> customers;
-        customers = this.customerDAO.searchCustomer(firstName, lastName, email, phoneNumber);
-        if (!customers.isEmpty()) {
-            DefaultTableModel model = (DefaultTableModel) viewMain.getBookingCustomerTable();
-            model.setRowCount(0);
-            for (Customer customer : customers) {
-                model.addRow(new Object[]{
-                    customer.getCustomerFname(),
-                    customer.getCustomerLname(),
-                    customer.getEmail(),
-                    customer.getPhoneNumber()
-                });
-            }
-            return true;
+    public void handleCustomerSearching(String firstName, String lastName, String email, String phoneNumber) {
+        try {
+           List<Customer> customers = this.customerDAO.searchCustomer(firstName, lastName, email, phoneNumber);
+           viewMain.updateBookingCustomerTable(customers);
+           if (customers.isEmpty()) {
+               viewMain.showInfoMessage("Not found room.");
+           }
+        } catch (IllegalArgumentException e) {
+           viewMain.showErrorMessage("Invalid search criteria: " + e.getMessage());
         }
-        return false;
     }
     
-    public boolean handleCustomerAdding(String firstName, String lastName, String email, String phoneNumber) throws IllegalArgumentException {
+    public void handleCustomerAdding(String firstName, String lastName, String email, String phoneNumber) throws IllegalArgumentException {
         Customer customer;
         try {
             customer = new Customer(9999999, StringUtils.capitalize(firstName), StringUtils.capitalize(lastName), email, phoneNumber);
             boolean success = this.customerDAO.addCustomer(customer.getCustomerFname(), customer.getCustomerLname(), customer.getEmail(), customer.getPhoneNumber());
             
             if (success) {
-                this.updateCustomerTable();
-                return true;
+                this.refreshManageCustomerTable();
+                this.viewAddCustomer.showInfoMessage("Customer added successfully!");
+                this.viewAddCustomer.dispose();
+            } else {
+                this.viewAddCustomer.showErrorMessage("Failed to add customer.");
             }
         } catch (SQLException e) {
-            System.out.println("Error adding room: " + e.getMessage());
+            System.out.println("Error adding customer: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            this.viewAddCustomer.showErrorMessage(e.getMessage());
         }
-        return false;
     }
     
-    public boolean handleCustomerEdit(int customerId, String newFirstName, String newLastName, String newEmail, String newPhoneNumber) throws IllegalArgumentException {
-    try {
-        Customer customer = this.customerDAO.getCustomerById(customerId);
-        if (customer == null) {
-            throw new IllegalArgumentException("Customer not found with id: " + customerId);
-        }
-        
-        customer.setCustomerFname(StringUtils.capitalize(newFirstName));
-        customer.setCustomerLname(StringUtils.capitalize(newLastName));
-        customer.setEmail(newEmail);
-        customer.setPhoneNumber(newPhoneNumber);
-        
-        boolean success = this.customerDAO.editCustomer(customer);
-        if (success) {
-            this.updateCustomerTable();
-            return true;
-        }
-    } catch (SQLException e) {
-        System.out.println("Database error: " + e.getMessage());
-    }
-        return false;
-    }
-
-    
-    public boolean handleCustomerDeletion(int customerId) {
+    public void handleCustomerEdit(int customerId, String newFirstName, String newLastName, String newEmail, String newPhoneNumber) throws IllegalArgumentException {
         try {
-            boolean success = this.customerDAO.destroyCustomer(customerId);
+            Customer customer = this.customerDAO.getCustomerById(customerId);
+            if (customer == null) {
+                this.viewEditCustomer.showErrorMessage("Customer not found with id: " + customerId);
+            }
+
+            customer.setCustomerFname(StringUtils.capitalize(newFirstName));
+            customer.setCustomerLname(StringUtils.capitalize(newLastName));
+            customer.setEmail(newEmail);
+            customer.setPhoneNumber(newPhoneNumber);
+
+            boolean success = this.customerDAO.editCustomer(customer);
             if (success) {
-                this.updateCustomerTable();
-                return true;
+                this.refreshManageCustomerTable();
+                this.viewEditCustomer.showInfoMessage("Customer edited successfully!");
+                this.viewEditCustomer.dispose();
+            } else {
+                this.viewEditCustomer.showErrorMessage("Failed to edit customer.");
             }
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            this.viewEditCustomer.showErrorMessage(e.getMessage());
         }
-        return false;
+    }
+
+    
+    public void handleCustomerDeletion(int customerId) {
+        try {
+            boolean success = this.customerDAO.destroyCustomer(customerId);
+            if (success) {
+                this.refreshManageCustomerTable();
+                this.viewMain.showInfoMessage("Delete Customer ID: " + customerId + " completed.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+            this.viewMain.showErrorMessage("Failed to delete customer ID: " + customerId);
+        }
     }
 }

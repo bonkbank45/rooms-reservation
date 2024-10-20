@@ -23,12 +23,21 @@ public class EditCustomerGUI extends javax.swing.JFrame {
         initComponents();
         this.customer = customer;
         this.customerController = customerController;
+        this.customerController.setEditCustomerGUI(this);
         
         this.jLabel6.setText(String.valueOf(this.customer.getCustomerId()));
         this.firstNameField.setText(this.customer.getCustomerFname());
         this.lastNameField.setText(this.customer.getCustomerLname());
         this.emailField.setText(this.customer.getEmail());
         this.phoneNumberField.setText(this.customer.getPhoneNumber());
+    }
+    
+    public void showInfoMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Infomation", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     /**
@@ -187,28 +196,15 @@ public class EditCustomerGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        try {
-            boolean success = this.customerController.handleCustomerEdit(this.customer.getCustomerId(), 
+        this.customerController.handleCustomerEdit(this.customer.getCustomerId(), 
                                     this.firstNameField.getText(),
                                     this.lastNameField.getText(),
                                     this.emailField.getText(), 
                                     this.phoneNumberField.getText());
-            if (success) {
-                JOptionPane.showMessageDialog(this, "Customer edited successfully!");
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to edit customer.");
-            }
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Invalid Input", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Error: " + e.getMessage());
-        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
