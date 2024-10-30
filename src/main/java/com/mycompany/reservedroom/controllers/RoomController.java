@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.reservedroom.controllers;
 
 import com.mycompany.reservedroom.views.AddRoomGUI;
@@ -31,11 +27,11 @@ public class RoomController {
         this.viewMain = view;
     }
     
-    public void setAddCustomerGUI(AddRoomGUI view) {
+    public void setAddRoomGUI(AddRoomGUI view) {
         this.viewAddRoom = view;
     }
     
-    public void setEditCustomerGUI(EditRoomGUI view) {
+    public void setEditRoomGUI(EditRoomGUI view) {
         this.viewEditRoom = view;
     }
     

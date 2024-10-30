@@ -20,6 +20,7 @@ public class AddRoomGUI extends javax.swing.JFrame {
     public AddRoomGUI(RoomController roomController) {
         initComponents();
         this.roomController = roomController;
+        this.roomController.setAddRoomGUI(this);
     }
     
     public void showInfoMessage(String message) {

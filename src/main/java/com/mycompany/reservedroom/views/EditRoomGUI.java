@@ -25,6 +25,7 @@ public class EditRoomGUI extends javax.swing.JFrame {
         initComponents();
         this.room = room;
         this.roomController = roomController;
+        this.roomController.setEditRoomGUI(this);
         
         this.jLabel2.setText(String.valueOf(this.room.getRoomId()));
         this.jTextField1.setText(this.room.getRoomNumber());
