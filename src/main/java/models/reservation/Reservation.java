@@ -96,6 +96,6 @@ public class Reservation {
     }
     
     public enum ReservationStatus {
-        CHECKED_ID, CHECKED_OUT, CANCELED
+        RESERVED, CHECKED_IN, CHECKED_OUT, CANCELED
     }
 }

@@ -19,6 +19,7 @@ public class ReservationImpl implements ReservationDAO {
     private final String STATUS_CHECKED_IN = "CHECKED_ID";
     private final String STATUS_CHECKED_OUT = "CHECKED_OUT";
     private final String STATUS_CHECKED_CANCEL = "CHECKED_CANCEL";
+    private final String STATUS_RESERVED = "RESERVED";
     
     @Override
     public List<Reservation> getAllReservations() throws SQLException {
@@ -62,8 +63,29 @@ public class ReservationImpl implements ReservationDAO {
     
     @Override
     public boolean addReservation(Reservation reservation) throws SQLException {
-        String query = "INSERT INTO reservations (reservation_id, customer_id, room_id, check_in_date, check_out_date, reservation_date, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        return executeUpdateWithReservation(query, reservation);
+        if (this.isRoomReserved(reservation.getRoomId())) {
+            System.out.println("Cannot add reservation: Room is already reserved.");
+            
+            throw new IllegalArgumentException("Fail to reservation because this room reserved already.");
+        }
+        
+        String reservationQuery = "INSERT INTO reservations (customer_id, room_id, check_in_date, check_out_date, reservation_date, status) VALUES (?, ?, ?, ?, ?, ?)";
+        String updateRoomQuery = "UPDATE rooms SET status = ? WHERE room_id = ?";
+
+        boolean success = executeUpdateWithReservation(reservationQuery, reservation);
+        if (success) {
+            try (Connection conn = new ConnectionDbManager().getConnection()) {
+                PreparedStatement pst = conn.prepareStatement(updateRoomQuery);
+                pst.setString(1, STATUS_RESERVED);
+                pst.setInt(2, reservation.getRoomId());
+                int affectedRows = pst.executeUpdate();
+                if (affectedRows == 0) {
+                    throw new SQLException("Add reservation failed, no rows affected when updating room status.");
+                }
+                return true;
+            }
+        }
+        return false;
     }
     
     @Override
@@ -119,18 +141,34 @@ public class ReservationImpl implements ReservationDAO {
     private boolean executeUpdateWithReservation(String query, Reservation reservation) throws SQLException {        
         try (Connection conn = new ConnectionDbManager().getConnection()) {
             PreparedStatement pst = conn.prepareStatement(query);
-            pst.setInt(1, reservation.getReservationId());
-            pst.setInt(2, reservation.getCustomerId());
-            pst.setInt(3, reservation.getRoomId());
-            pst.setDate(4, (java.sql.Date) reservation.getCheckInDate());
-            pst.setDate(5, (java.sql.Date) reservation.getCheckOutDate());
-            pst.setDate(6, (java.sql.Date) reservation.getReservationDate());
-            pst.setString(7, reservation.getReservationStatus());
+            pst.setInt(1, reservation.getCustomerId());
+            pst.setInt(2, reservation.getRoomId());
+
+            // Convert java.util.Date to java.sql.Date
+            pst.setDate(3, new java.sql.Date(reservation.getCheckInDate().getTime())); // Convert check-in date
+            pst.setDate(4, new java.sql.Date(reservation.getCheckOutDate().getTime())); // Convert check-out date
+            pst.setDate(5, new java.sql.Date(reservation.getReservationDate().getTime())); // Convert reservation date
+
+            pst.setString(6, reservation.getReservationStatus());
 
             int affectedRow = pst.executeUpdate();
             return affectedRow > 0;
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        }
+    return false;
+    }
+    
+    private boolean isRoomReserved(int roomId) throws SQLException {
+        String query = "SELECT status FROM rooms WHERE room_id = ?";
+        try (Connection conn = new ConnectionDbManager().getConnection();
+             PreparedStatement pst = conn.prepareStatement(query)) {
+            pst.setInt(1, roomId);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                String roomStatus = rs.getString("status");
+                return STATUS_RESERVED.equals(roomStatus);
+            }
         }
         return false;
     }

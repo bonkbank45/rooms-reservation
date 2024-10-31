@@ -72,8 +72,8 @@ public class Room {
         if (status == null || status.trim().isEmpty()) {
             throw new IllegalArgumentException("Status can't be null or empty");
         }
-        if (!status.equalsIgnoreCase("Available") && !status.equalsIgnoreCase("Unavailable") && !status.equalsIgnoreCase("Booking") ) {
-            throw new IllegalArgumentException("Invalid status. Must be 'Available', 'Unavailable' or 'Booking'");
+        if (!status.equalsIgnoreCase("Available") && !status.equalsIgnoreCase("Unavailable") && !status.equalsIgnoreCase("Reserved") ) {
+            throw new IllegalArgumentException("Invalid status. Must be 'Available', 'Unavailable' or 'Reserved'");
         }
         this.status = status;
     }

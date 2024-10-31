@@ -53,7 +53,7 @@ public class CustomerController {
            List<Customer> customers = this.customerDAO.searchCustomer(firstName, lastName, email, phoneNumber);
            viewMain.updateBookingCustomerTable(customers);
            if (customers.isEmpty()) {
-               viewMain.showInfoMessage("Not found room.");
+               viewMain.showInfoMessage("Not found customer.");
            }
         } catch (IllegalArgumentException e) {
            viewMain.showErrorMessage("Invalid search criteria: " + e.getMessage());
