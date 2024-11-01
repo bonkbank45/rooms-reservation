@@ -44,6 +44,15 @@ public class ReservationController {
         }
     }
     
+    public void refreshCheckOutTable() {
+        try {
+            List<ReservationInfomation> reservationInfomationList = this.reservationDAO.getCheckOutDetails();
+            this.viewMain.updateCheckOutTable(reservationInfomationList);
+        } catch (SQLException e) {
+            this.viewMain.showErrorMessage("Error retrieving check-out data: " + e.getMessage());
+        }
+    }
+    
     public void handleMakeReservation(int customerId, int roomId, Date checkInDate, Date checkOutDate) {
         Reservation reservation = new Reservation(999999, customerId, roomId, checkInDate, checkOutDate, getTodayDate(), "RESERVED");
         try {
@@ -53,6 +62,7 @@ public class ReservationController {
             } else {
                 this.viewMain.showErrorMessage("Failed to reservation room.");
             }
+            this.refreshCheckInTable();
             this.viewMain.resetRoomTable();
             this.viewMain.resetRoomSelectedLabel();
             this.viewMain.resetRoomSelected();
@@ -70,6 +80,7 @@ public class ReservationController {
             if (success) {
                 this.viewMain.showInfoMessage("Check-In room success!");
                 this.refreshCheckInTable();
+                this.refreshCheckOutTable();
             } else {
                 this.viewMain.showErrorMessage("Failed to check-in room.");
             }
@@ -78,8 +89,18 @@ public class ReservationController {
         }
     }
     
-    public void handleMakeCheckOut() {
-        // TODO
+    public void handleMakeCheckOut(int reservationId, int roomId) {
+        try {
+            boolean success = this.reservationDAO.checkoutReservation(reservationId, roomId);
+            if (success) {
+                this.viewMain.showInfoMessage("Check-Out room success!");
+                this.refreshCheckOutTable();
+            } else {
+                this.viewMain.showErrorMessage("Failed to check-out room.");
+            }
+        } catch (SQLException e) {
+            this.viewMain.showErrorMessage("Error check-in for this reservation: " + e.getMessage());
+        }
     }
     
     public void handleMakeCancel() {

@@ -20,6 +20,8 @@ public class ReservationImpl implements ReservationDAO {
     private final String STATUS_CHECKED_OUT = "CHECKED_OUT";
     private final String STATUS_CHECKED_CANCEL = "CHECKED_CANCEL";
     private final String STATUS_RESERVED = "RESERVED";
+
+    private final String ROOM_AVAILABLE = "Available";
     
     @Override
     public List<Reservation> getAllReservations() throws SQLException {
@@ -112,10 +114,24 @@ public class ReservationImpl implements ReservationDAO {
     }
     
     @Override
-    public boolean checkoutReservation(int reservationId) throws SQLException {
-        return updateReservationStatus(reservationId, this.STATUS_CHECKED_OUT);
+    public boolean checkoutReservation(int reservationId, int roomId) throws SQLException {
+        boolean success = updateReservationStatus(reservationId, this.STATUS_CHECKED_OUT);
+        String updateRoomQuery = "UPDATE rooms SET status = ? WHERE room_id = ?";
+        if (success) {
+            try (Connection conn = new ConnectionDbManager().getConnection()) {
+                    PreparedStatement pst = conn.prepareStatement(updateRoomQuery);
+                    pst.setString(1, ROOM_AVAILABLE);
+                    pst.setInt(2, roomId);
+                    int affectedRows = pst.executeUpdate();
+                    if (affectedRows == 0) {
+                        throw new SQLException("Add room status failed, no rows affected when updating room status.");
+                    }
+                    return true;
+                }
+            }
+        return false;            
     }
-    
+
     @Override
     public boolean cancelReservation(int reservationId) throws SQLException {
         return updateReservationStatus(reservationId, this.STATUS_CHECKED_CANCEL);
@@ -125,18 +141,18 @@ public class ReservationImpl implements ReservationDAO {
     public List<ReservationInfomation> getCheckInDetails() {
         List<ReservationInfomation> reservationInfomationList = new ArrayList<>();
         String query = "SELECT r.reservation_id, r.check_in_date, r.check_out_date, r.reservation_date, r.status, "
-                            + "c.first_name, c.email, "
-                            + "rm.room_number "
-                    + "FROM reservations r "
-                    + "JOIN customers c ON r.customer_id = c.customer_id "
-                    + "JOIN rooms rm ON r.room_id = rm.room_id "
-                    + "WHERE r.status = 'RESERVED'";
+                     + "c.customer_id , c.first_name, c.email, rm.room_number "
+                     + "FROM reservations r "
+                     + "JOIN customers c ON r.customer_id = c.customer_id "
+                     + "JOIN rooms rm ON r.room_id = rm.room_id "
+                     + "WHERE r.status = 'RESERVED'";
         try (Connection conn = new ConnectionDbManager().getConnection()) {
             PreparedStatement pst = conn.prepareStatement(query);
             ResultSet rs = pst.executeQuery();
             
             while (rs.next()) {
                 int reservationId = rs.getInt("reservation_id");
+                int customerId = rs.getInt("customer_id");
                 Date checkInDate = rs.getDate("check_in_date");
                 Date checkOutDate = rs.getDate("check_out_date");
                 Date reservationDate = rs.getDate("reservation_date");
@@ -148,8 +164,47 @@ public class ReservationImpl implements ReservationDAO {
                 String roomNumber = rs.getString("room_number");
                 
                 ReservationInfomation reservationInfo = new ReservationInfomation(
-                        reservationId, customerFname, email, roomNumber, checkInDate,
+                        reservationId, customerId, customerFname, email, roomNumber, checkInDate,
                         checkOutDate, reservationDate, status);
+                
+                reservationInfomationList.add(reservationInfo);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving reservation details: " + e.getMessage());
+        }
+        return reservationInfomationList;
+    }
+    
+    @Override
+    public List<ReservationInfomation> getCheckOutDetails() {
+        List<ReservationInfomation> reservationInfomationList = new ArrayList<>();
+        String query = "SELECT r.reservation_id, r.check_in_date, r.check_out_date, r.reservation_date, r.status, "
+                     + "c.customer_id, c.first_name, c.email, rm.room_number "
+                     + "FROM reservations r "
+                     + "JOIN customers c ON r.customer_id = c.customer_id "
+                     + "JOIN rooms rm ON r.room_id = rm.room_id "
+                     + "WHERE r.status = 'CHECKED_IN'";
+        try (Connection conn = new ConnectionDbManager().getConnection()) {
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                int reservationId = rs.getInt("reservation_id");
+                int customerId = rs.getInt("customer_id");
+                Date checkInDate = rs.getDate("check_in_date");
+                Date checkOutDate = rs.getDate("check_out_date");
+                Date reservationDate = rs.getDate("reservation_date");
+                String status = rs.getString("status");
+                
+                String customerFname = rs.getString("first_name");
+                String email = rs.getString("email");
+                
+                String roomNumber = rs.getString("room_number");
+                
+                ReservationInfomation reservationInfo = new ReservationInfomation(
+                        reservationId, customerId, customerFname, email, roomNumber, checkInDate,
+                        checkOutDate, reservationDate, status);
+                
                 reservationInfomationList.add(reservationInfo);
             }
         } catch (SQLException e) {

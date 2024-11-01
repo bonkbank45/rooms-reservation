@@ -12,6 +12,7 @@ import java.util.Date;
  */
 public class ReservationInfomation {
     private int reservationId;
+    private int customerId;
     private String customerFirstName;
     private String customerEmail;
     private String roomNumber;
@@ -20,9 +21,10 @@ public class ReservationInfomation {
     private Date reservationDate;
     private String reservationStatus;
 
-    public ReservationInfomation(int reservationId, String customerFirstName, String customerEmail, 
+    public ReservationInfomation(int reservationId, int customerId, String customerFirstName, String customerEmail, 
                        String roomNumber, Date checkInDate, Date checkOutDate, Date reservationDate, String reservationStatus) {
         this.reservationId = reservationId;
+        this.customerId = customerId;
         this.customerFirstName = customerFirstName;
         this.customerEmail = customerEmail;
         this.roomNumber = roomNumber;
@@ -34,6 +36,10 @@ public class ReservationInfomation {
 
     public int getReservationId() {
         return reservationId;
+    }
+    
+    public int getCustomerId() {
+        return customerId;
     }
 
     public String getCustomerFirstName() {

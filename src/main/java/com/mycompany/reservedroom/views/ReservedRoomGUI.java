@@ -53,6 +53,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         this.reservationController.setView(this);
         
         this.reservationController.refreshCheckInTable();
+        this.reservationController.refreshCheckOutTable();
         this.roomController.refreshManageRoomTable();
         this.customerController.refreshManageCustomerTable();
 
@@ -191,6 +192,25 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         for (ReservationInfomation reservation : reservations) {
             model.addRow(new Object[] {
                 reservation.getReservationId(),
+                reservation.getCustomerId(),
+                reservation.getCustomerFirstName(),
+                reservation.getCustomerEmail(),
+                reservation.getRoomNumber(),
+                reservation.getCheckInDate(),
+                reservation.getCheckOutDate(),
+                reservation.getReservationDate(),
+                reservation.getReservationStatus(),
+            });
+        }
+    }
+    
+    public void updateCheckOutTable(List<ReservationInfomation> reservations) {
+        DefaultTableModel model = (DefaultTableModel) checkOutRoomTable.getModel();
+        model.setRowCount(0);
+        for (ReservationInfomation reservation : reservations) {
+            model.addRow(new Object[] {
+                reservation.getReservationId(),
+                reservation.getCustomerId(),
                 reservation.getCustomerFirstName(),
                 reservation.getCustomerEmail(),
                 reservation.getRoomNumber(),
@@ -300,7 +320,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         roomCheckOutTab = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        checkOutRoomTable = new javax.swing.JTable();
         jPanel18 = new javax.swing.JPanel();
         jButton13 = new javax.swing.JButton();
         jLabel33 = new javax.swing.JLabel();
@@ -983,17 +1003,17 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
 
         checkInRoomTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Reservation ID", "First Name", "Email", "Room Number", "Check-In Date", "Check-Out Date", "Reservation Date", "Status"
+                "Reservation ID", "Customer ID", "First Name", "Email", "Room Number", "Check-In Date", "Check-Out Date", "Reservation Date", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, false, false, false, false
+                false, true, true, true, true, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1074,20 +1094,25 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Room Check-In", roomCheckInTab);
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        checkOutRoomTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Reservation ID", "First Name", "Email", "Room Number", "Check-In Date", "Check-Out Date", "Reservation Date", "Status"
+                "Reservation ID", "Customer ID", "First Name", "Email", "Room Number", "Check-In Date", "Check-Out Date", "Reservation Date", "Status"
             }
         ));
-        jScrollPane8.setViewportView(jTable4);
+        jScrollPane8.setViewportView(checkOutRoomTable);
 
         jButton13.setText("Check-Out Room");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
         jPanel18.setLayout(jPanel18Layout);
@@ -1581,9 +1606,25 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                 this.reservationController.handleMakeCheckIn((int) this.checkInRoomTable.getValueAt(selectedRow, 0));
             }
         } else {
-            this.showInfoMessage("Please select a row to submit customer.");
+            this.showInfoMessage("Please select a row to submit check-in.");
         }
     }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        int selectedRow = this.checkOutRoomTable.getSelectedRow();
+
+        if (selectedRow != -1) {
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "Are you sure to Check-Out this Reservation?",
+                    "Confirm",
+                    JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                this.reservationController.handleMakeCheckOut((int) this.checkOutRoomTable.getValueAt(selectedRow, 0), (int) this.checkOutRoomTable.getValueAt(selectedRow, 1));
+            }
+        } else {
+            this.showInfoMessage("Please select a row to submit check-out.");
+        }
+    }//GEN-LAST:event_jButton13ActionPerformed
 
     private Date getTodayDate() {
         Calendar todayCalendar = Calendar.getInstance();
@@ -1650,6 +1691,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     private javax.swing.JTable checkInRoomTable;
     private com.toedter.calendar.JCalendar checkOutCalendar;
     private javax.swing.JLabel checkOutLabel;
+    private javax.swing.JTable checkOutRoomTable;
     private javax.swing.JPanel customerPanel;
     private javax.swing.JTextField emailFieldName;
     private javax.swing.JTextField firstNameField;
@@ -1724,7 +1766,6 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable4;
     private javax.swing.JLabel labelEmail;
     private javax.swing.JLabel labelFirstName;
     private javax.swing.JLabel labelLastName;

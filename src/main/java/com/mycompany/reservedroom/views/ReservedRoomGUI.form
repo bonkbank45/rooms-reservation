@@ -1251,8 +1251,9 @@
                     <Component class="javax.swing.JTable" name="checkInRoomTable">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="8" rowCount="4">
+                          <Table columnCount="9" rowCount="4">
                             <Column editable="false" title="Reservation ID" type="java.lang.Object"/>
+                            <Column editable="true" title="Customer ID" type="java.lang.Object"/>
                             <Column editable="true" title="First Name" type="java.lang.Object"/>
                             <Column editable="true" title="Email" type="java.lang.Object"/>
                             <Column editable="true" title="Room Number" type="java.lang.Object"/>
@@ -1264,6 +1265,11 @@
                         </Property>
                         <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                           <TableColumnModel selectionModel="0">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                               <Title/>
                               <Editor/>
@@ -1427,11 +1433,12 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="jTable4">
+                    <Component class="javax.swing.JTable" name="checkOutRoomTable">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="8" rowCount="4">
+                          <Table columnCount="9" rowCount="4">
                             <Column editable="true" title="Reservation ID" type="java.lang.Object"/>
+                            <Column editable="true" title="Customer ID" type="java.lang.Object"/>
                             <Column editable="true" title="First Name" type="java.lang.Object"/>
                             <Column editable="true" title="Email" type="java.lang.Object"/>
                             <Column editable="true" title="Room Number" type="java.lang.Object"/>
@@ -1443,6 +1450,11 @@
                         </Property>
                         <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                           <TableColumnModel selectionModel="0">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                               <Title/>
                               <Editor/>
@@ -1518,6 +1530,9 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Check-Out Room"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton13ActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
