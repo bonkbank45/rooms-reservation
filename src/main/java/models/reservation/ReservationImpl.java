@@ -151,23 +151,7 @@ public class ReservationImpl implements ReservationDAO {
             ResultSet rs = pst.executeQuery();
             
             while (rs.next()) {
-                int reservationId = rs.getInt("reservation_id");
-                int customerId = rs.getInt("customer_id");
-                Date checkInDate = rs.getDate("check_in_date");
-                Date checkOutDate = rs.getDate("check_out_date");
-                Date reservationDate = rs.getDate("reservation_date");
-                String status = rs.getString("status");
-                
-                String customerFname = rs.getString("first_name");
-                String email = rs.getString("email");
-                
-                String roomNumber = rs.getString("room_number");
-                
-                ReservationInfomation reservationInfo = new ReservationInfomation(
-                        reservationId, customerId, customerFname, email, roomNumber, checkInDate,
-                        checkOutDate, reservationDate, status);
-                
-                reservationInfomationList.add(reservationInfo);
+                reservationInfomationList.add(mapResultSetResInfo(rs));
             }
         } catch (SQLException e) {
             System.out.println("Error retrieving reservation details: " + e.getMessage());
@@ -189,23 +173,7 @@ public class ReservationImpl implements ReservationDAO {
             ResultSet rs = pst.executeQuery();
             
             while (rs.next()) {
-                int reservationId = rs.getInt("reservation_id");
-                int customerId = rs.getInt("customer_id");
-                Date checkInDate = rs.getDate("check_in_date");
-                Date checkOutDate = rs.getDate("check_out_date");
-                Date reservationDate = rs.getDate("reservation_date");
-                String status = rs.getString("status");
-                
-                String customerFname = rs.getString("first_name");
-                String email = rs.getString("email");
-                
-                String roomNumber = rs.getString("room_number");
-                
-                ReservationInfomation reservationInfo = new ReservationInfomation(
-                        reservationId, customerId, customerFname, email, roomNumber, checkInDate,
-                        checkOutDate, reservationDate, status);
-                
-                reservationInfomationList.add(reservationInfo);
+                reservationInfomationList.add(mapResultSetResInfo(rs));
             }
         } catch (SQLException e) {
             System.out.println("Error retrieving reservation details: " + e.getMessage());
@@ -263,6 +231,31 @@ public class ReservationImpl implements ReservationDAO {
             }
         }
         return false;
+    }
+    
+    private ReservationInfomation mapResultSetResInfo(ResultSet rs) throws SQLException {
+        int reservationId = rs.getInt("reservation_id");
+        int customerId = rs.getInt("customer_id");
+        Date checkInDate = rs.getDate("check_in_date");
+        Date checkOutDate = rs.getDate("check_out_date");
+        Date reservationDate = rs.getDate("reservation_date");
+        String status = rs.getString("status");
+                
+        String customerFname = rs.getString("first_name");
+        String email = rs.getString("email");
+                
+        String roomNumber = rs.getString("room_number");
+                
+        return new ReservationInfomation(
+                reservationId, 
+                customerId, 
+                customerFname, 
+                email, 
+                roomNumber, 
+                checkInDate,
+                checkOutDate, 
+                reservationDate, 
+                status);
     }
 }
 
