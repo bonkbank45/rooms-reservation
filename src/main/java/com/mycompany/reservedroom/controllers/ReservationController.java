@@ -89,9 +89,9 @@ public class ReservationController {
         }
     }
     
-    public void handleMakeCheckOut(int reservationId, int roomId) {
+    public void handleMakeCheckOut(int reservationId, String roomNumber) {
         try {
-            boolean success = this.reservationDAO.checkoutReservation(reservationId, roomId);
+            boolean success = this.reservationDAO.checkoutReservation(reservationId, roomNumber);
             if (success) {
                 this.viewMain.showInfoMessage("Check-Out room success!");
                 this.refreshCheckOutTable();

@@ -114,14 +114,14 @@ public class ReservationImpl implements ReservationDAO {
     }
     
     @Override
-    public boolean checkoutReservation(int reservationId, int roomId) throws SQLException {
+    public boolean checkoutReservation(int reservationId, String roomNumber) throws SQLException {
         boolean success = updateReservationStatus(reservationId, this.STATUS_CHECKED_OUT);
-        String updateRoomQuery = "UPDATE rooms SET status = ? WHERE room_id = ?";
+        String updateRoomQuery = "UPDATE rooms SET status = ? WHERE room_number = ?";
         if (success) {
             try (Connection conn = new ConnectionDbManager().getConnection()) {
                     PreparedStatement pst = conn.prepareStatement(updateRoomQuery);
                     pst.setString(1, ROOM_AVAILABLE);
-                    pst.setInt(2, roomId);
+                    pst.setString(2, roomNumber);
                     int affectedRows = pst.executeUpdate();
                     if (affectedRows == 0) {
                         throw new SQLException("Add room status failed, no rows affected when updating room status.");
@@ -235,7 +235,6 @@ public class ReservationImpl implements ReservationDAO {
     
     private ReservationInfomation mapResultSetResInfo(ResultSet rs) throws SQLException {
         int reservationId = rs.getInt("reservation_id");
-        int customerId = rs.getInt("customer_id");
         Date checkInDate = rs.getDate("check_in_date");
         Date checkOutDate = rs.getDate("check_out_date");
         Date reservationDate = rs.getDate("reservation_date");
@@ -248,7 +247,6 @@ public class ReservationImpl implements ReservationDAO {
                 
         return new ReservationInfomation(
                 reservationId, 
-                customerId, 
                 customerFname, 
                 email, 
                 roomNumber, 

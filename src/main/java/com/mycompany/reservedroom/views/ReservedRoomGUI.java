@@ -192,7 +192,6 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         for (ReservationInfomation reservation : reservations) {
             model.addRow(new Object[] {
                 reservation.getReservationId(),
-                reservation.getCustomerId(),
                 reservation.getCustomerFirstName(),
                 reservation.getCustomerEmail(),
                 reservation.getRoomNumber(),
@@ -210,7 +209,6 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         for (ReservationInfomation reservation : reservations) {
             model.addRow(new Object[] {
                 reservation.getReservationId(),
-                reservation.getCustomerId(),
                 reservation.getCustomerFirstName(),
                 reservation.getCustomerEmail(),
                 reservation.getRoomNumber(),
@@ -342,6 +340,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         showRoomTable = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Room Reservation Program");
@@ -1003,17 +1002,17 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
 
         checkInRoomTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Reservation ID", "Customer ID", "First Name", "Email", "Room Number", "Check-In Date", "Check-Out Date", "Reservation Date", "Status"
+                "Reservation ID", "First Name", "Email", "Room Number", "Check-In Date", "Check-Out Date", "Reservation Date", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1096,15 +1095,23 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
 
         checkOutRoomTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Reservation ID", "Customer ID", "First Name", "Email", "Room Number", "Check-In Date", "Check-Out Date", "Reservation Date", "Status"
+                "Reservation ID", "First Name", "Email", "Room Number", "Check-In Date", "Check-Out Date", "Reservation Date", "Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane8.setViewportView(checkOutRoomTable);
 
         jButton13.setText("Check-Out Room");
@@ -1335,6 +1342,13 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
             }
         });
 
+        jButton11.setText("Refresh");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout roomPanelLayout = new javax.swing.GroupLayout(roomPanel);
         roomPanel.setLayout(roomPanelLayout);
         roomPanelLayout.setHorizontalGroup(
@@ -1349,15 +1363,19 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                         .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         roomPanelLayout.setVerticalGroup(
             roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(roomPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
+                        .addComponent(jButton11))
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 10481, Short.MAX_VALUE))
@@ -1619,12 +1637,16 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                     "Confirm",
                     JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
-                this.reservationController.handleMakeCheckOut((int) this.checkOutRoomTable.getValueAt(selectedRow, 0), (int) this.checkOutRoomTable.getValueAt(selectedRow, 1));
+                this.reservationController.handleMakeCheckOut((int) this.checkOutRoomTable.getValueAt(selectedRow, 0), this.checkOutRoomTable.getValueAt(selectedRow, 3).toString());
             }
         } else {
             this.showInfoMessage("Please select a row to submit check-out.");
         }
     }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        this.roomController.refreshManageRoomTable();
+    }//GEN-LAST:event_jButton11ActionPerformed
 
     private Date getTodayDate() {
         Calendar todayCalendar = Calendar.getInstance();
@@ -1697,6 +1719,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     private javax.swing.JTextField firstNameField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
