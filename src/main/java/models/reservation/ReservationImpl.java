@@ -16,7 +16,7 @@ import models.ConnectionDbManager;
  * @author thana
  */
 public class ReservationImpl implements ReservationDAO {
-    private final String STATUS_CHECKED_IN = "CHECKED_ID";
+    private final String STATUS_CHECKED_IN = "CHECKED_IN";
     private final String STATUS_CHECKED_OUT = "CHECKED_OUT";
     private final String STATUS_CHECKED_CANCEL = "CHECKED_CANCEL";
     private final String STATUS_RESERVED = "RESERVED";
@@ -119,6 +119,43 @@ public class ReservationImpl implements ReservationDAO {
     @Override
     public boolean cancelReservation(int reservationId) throws SQLException {
         return updateReservationStatus(reservationId, this.STATUS_CHECKED_CANCEL);
+    }
+    
+    @Override
+    public List<ReservationInfomation> getCheckInDetails() {
+        List<ReservationInfomation> reservationInfomationList = new ArrayList<>();
+        String query = "SELECT r.reservation_id, r.check_in_date, r.check_out_date, r.reservation_date, r.status, "
+                            + "c.first_name, c.email, "
+                            + "rm.room_number "
+                    + "FROM reservations r "
+                    + "JOIN customers c ON r.customer_id = c.customer_id "
+                    + "JOIN rooms rm ON r.room_id = rm.room_id "
+                    + "WHERE r.status = 'RESERVED'";
+        try (Connection conn = new ConnectionDbManager().getConnection()) {
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                int reservationId = rs.getInt("reservation_id");
+                Date checkInDate = rs.getDate("check_in_date");
+                Date checkOutDate = rs.getDate("check_out_date");
+                Date reservationDate = rs.getDate("reservation_date");
+                String status = rs.getString("status");
+                
+                String customerFname = rs.getString("first_name");
+                String email = rs.getString("email");
+                
+                String roomNumber = rs.getString("room_number");
+                
+                ReservationInfomation reservationInfo = new ReservationInfomation(
+                        reservationId, customerFname, email, roomNumber, checkInDate,
+                        checkOutDate, reservationDate, status);
+                reservationInfomationList.add(reservationInfo);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving reservation details: " + e.getMessage());
+        }
+        return reservationInfomationList;
     }
     
     private boolean updateReservationStatus(int reservationId, String status) {

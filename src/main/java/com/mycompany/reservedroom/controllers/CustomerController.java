@@ -51,7 +51,7 @@ public class CustomerController {
     public void handleCustomerSearching(String firstName, String lastName, String email, String phoneNumber) {
         try {
            List<Customer> customers = this.customerDAO.searchCustomer(firstName, lastName, email, phoneNumber);
-           viewMain.updateBookingCustomerTable(customers);
+           viewMain.updateReservationCustomerTable(customers);
            if (customers.isEmpty()) {
                viewMain.showInfoMessage("Not found customer.");
            }

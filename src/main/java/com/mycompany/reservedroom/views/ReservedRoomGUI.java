@@ -4,7 +4,6 @@ package com.mycompany.reservedroom.views;
  *
  * @author thana
  */
-
 import com.mycompany.reservedroom.controllers.CustomerController;
 import com.mycompany.reservedroom.controllers.ReservationController;
 import com.mycompany.reservedroom.controllers.RoomController;
@@ -19,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import models.customer.Customer;
+import models.reservation.ReservationInfomation;
 import models.room.Room;
 
 public class ReservedRoomGUI extends javax.swing.JFrame {
@@ -26,67 +26,74 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     private final RoomController roomController;
     private final CustomerController customerController;
     private final ReservationController reservationController;
-    
+
     private Customer customerSelected;
     private Room roomSelected;
-    
+
     private Date selectedCheckInDate;
     private Date selectedCheckOutDate;
-    
+
     /**
      * Creates new form ReservedRoomGUI
+     *
      * @param roomController
+     * @param customerController
+     * @param reservationController
      */
-    public ReservedRoomGUI(RoomController roomController, CustomerController customerController, ReservationController reservationController) {        
+    public ReservedRoomGUI(RoomController roomController, CustomerController customerController, ReservationController reservationController) {
         initComponents();
         this.roomController = roomController;
         this.roomController.setView(this);
-        
+
         this.customerController = customerController;
         this.customerController.setView(this);
         this.customerController.refreshManageCustomerTable();
-        
+
         this.reservationController = reservationController;
         this.reservationController.setView(this);
         
-        TableColumnModel roomCcolumnModel = bookingRoomTable.getColumnModel();
+        this.reservationController.refreshCheckInTable();
+        this.roomController.refreshManageRoomTable();
+        this.customerController.refreshManageCustomerTable();
+
+        TableColumnModel roomCcolumnModel = reservationRoomTable.getColumnModel();
         //columnModel.removeColumn(columnModel.getColumn(2));
     }
-    
+
     public void setCustomerSelected(Customer customer) {
         this.customerSelected = customer;
     }
-    
+
     public void setRoomSelected(Room room) {
         this.roomSelected = room;
     }
-    
+
     public Customer getCustomerSelected() {
         return this.customerSelected;
     }
-    
+
     public Room getRoomSelected() {
         return this.roomSelected;
     }
-    
+
     public void resetRoomSelected() {
         this.roomSelected = null;
     }
-    
+
     public void resetRoomTable() {
-        DefaultTableModel table = (DefaultTableModel) this.bookingRoomTable.getModel();
+        DefaultTableModel table = (DefaultTableModel) this.reservationRoomTable.getModel();
         table.setRowCount(0);
     }
-    
+
     public void resetRoomSelectedLabel() {
         this.jLabel7.setText("Your selected room");
         this.jLabel27.setText("none");
         this.jLabel28.setText("none");
         this.jLabel29.setText("none");
     }
-    
+
     public String getSelectedRoomType() {
-        JRadioButton[] radioButtons = { this.typeSingleButton, this.typeDoubleButton };
+        JRadioButton[] radioButtons = {this.typeSingleButton, this.typeDoubleButton};
 
         for (JRadioButton button : radioButtons) {
             if (button.isSelected()) {
@@ -95,31 +102,31 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         }
         return "Single";
     }
-    
+
     public TableModel getShowRoomTable() {
         return this.showRoomTable.getModel();
     }
-    
+
     public void updateRoomTable(TableModel model) {
         this.showRoomTable.setModel(model);
     }
-    
+
     public TableModel getManageCustomerTable() {
         return this.manageCustomerTable.getModel();
     }
-    
+
     public TableModel getBookingCustomerTable() {
         return this.bookingCustomerTable.getModel();
     }
-    
+
     public TableModel getBookingRoomTable() {
-        return this.bookingRoomTable.getModel();
+        return this.reservationRoomTable.getModel();
     }
-    
+
     public void updateCustomerTable(TableModel model) {
         this.manageCustomerTable.setModel(model);
     }
-    
+
     public void updateManageCustomerTable(List<Customer> customerList) {
         DefaultTableModel model = (DefaultTableModel) manageCustomerTable.getModel();
         model.setRowCount(0); // Clear existing rows
@@ -133,8 +140,8 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
             });
         }
     }
-    
-    public void updateBookingCustomerTable(List<Customer> customers) {
+
+    public void updateReservationCustomerTable(List<Customer> customers) {
         DefaultTableModel model = (DefaultTableModel) bookingCustomerTable.getModel();
         model.setRowCount(0);
         for (Customer customer : customers) {
@@ -150,7 +157,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
 //            showErrorMessage("No customers found matching the criteria.");
 //        }
     }
-    
+
     public void updateManageRoomTable(List<Room> roomList) {
         DefaultTableModel model = (DefaultTableModel) showRoomTable.getModel();
         model.setRowCount(0);
@@ -165,8 +172,8 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         }
     }
 
-    public void updateBookingRoomTable(List<Room> rooms) {
-        DefaultTableModel model = (DefaultTableModel) bookingRoomTable.getModel();
+    public void updateReservationRoomTable(List<Room> rooms) {
+        DefaultTableModel model = (DefaultTableModel) reservationRoomTable.getModel();
         model.setRowCount(0);
         for (Room room : rooms) {
             model.addRow(new Object[]{
@@ -174,18 +181,35 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                 room.getRoomNumber(),
                 room.getRoomPrice(),
                 room.getRoomType(),
-                room.getStatus(),
-            });
+                room.getStatus(),});
         }
     }
     
+    public void updateCheckInTable(List<ReservationInfomation> reservations) {
+        DefaultTableModel model = (DefaultTableModel) checkInRoomTable.getModel();
+        model.setRowCount(0);
+        for (ReservationInfomation reservation : reservations) {
+            model.addRow(new Object[] {
+                reservation.getReservationId(),
+                reservation.getCustomerFirstName(),
+                reservation.getCustomerEmail(),
+                reservation.getRoomNumber(),
+                reservation.getCheckInDate(),
+                reservation.getCheckOutDate(),
+                reservation.getReservationDate(),
+                reservation.getReservationStatus(),
+            });
+        }
+    }
+
     public void showInfoMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
     public void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -207,7 +231,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         searchRoomButton = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
-        bookingRoomTable = new javax.swing.JTable();
+        reservationRoomTable = new javax.swing.JTable();
         selectRoomButton = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -269,7 +293,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         roomCheckInTab = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        checkInRoomTable = new javax.swing.JTable();
         jPanel14 = new javax.swing.JPanel();
         jButton10 = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
@@ -333,7 +357,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
             }
         });
 
-        bookingRoomTable.setModel(new javax.swing.table.DefaultTableModel(
+        reservationRoomTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -352,13 +376,13 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane5.setViewportView(bookingRoomTable);
-        if (bookingRoomTable.getColumnModel().getColumnCount() > 0) {
-            bookingRoomTable.getColumnModel().getColumn(0).setResizable(false);
-            bookingRoomTable.getColumnModel().getColumn(1).setResizable(false);
-            bookingRoomTable.getColumnModel().getColumn(2).setResizable(false);
-            bookingRoomTable.getColumnModel().getColumn(3).setResizable(false);
-            bookingRoomTable.getColumnModel().getColumn(4).setResizable(false);
+        jScrollPane5.setViewportView(reservationRoomTable);
+        if (reservationRoomTable.getColumnModel().getColumnCount() > 0) {
+            reservationRoomTable.getColumnModel().getColumn(0).setResizable(false);
+            reservationRoomTable.getColumnModel().getColumn(1).setResizable(false);
+            reservationRoomTable.getColumnModel().getColumn(2).setResizable(false);
+            reservationRoomTable.getColumnModel().getColumn(3).setResizable(false);
+            reservationRoomTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
         selectRoomButton.setText("Select Room");
@@ -957,20 +981,33 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Adding Room Reservation", roomBookingTab);
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        checkInRoomTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Reservation ID", "First Name", "Email", "Room Number", "Check-In Date", "Check-Out Date", "Reservation Date", "Status"
             }
-        ));
-        jScrollPane7.setViewportView(jTable3);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane7.setViewportView(checkInRoomTable);
 
         jButton10.setText("Check-In Room");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
@@ -1039,13 +1076,13 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
 
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Reservation ID", "First Name", "Email", "Room Number", "Check-In Date", "Check-Out Date", "Reservation Date", "Status"
             }
         ));
         jScrollPane8.setViewportView(jTable4);
@@ -1335,9 +1372,9 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         if (selectedRow != -1) {
             int roomId = (int) this.showRoomTable.getValueAt(selectedRow, 0);
             int confirm = JOptionPane.showConfirmDialog(null,
-                "Are you sure to delete this room?",
-                "Confirm",
-                JOptionPane.YES_NO_OPTION);
+                    "Are you sure to delete this room?",
+                    "Confirm",
+                    JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 this.roomController.handleRoomDeletion(roomId);
             }
@@ -1371,9 +1408,9 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         if (selectedRow != -1) {
             int roomId = (int) this.manageCustomerTable.getValueAt(selectedRow, 0);
             int confirm = JOptionPane.showConfirmDialog(this,
-                "Are you sure to delete this customer?",
-                "Confirm",
-                JOptionPane.YES_NO_OPTION);
+                    "Are you sure to delete this customer?",
+                    "Confirm",
+                    JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 this.customerController.handleCustomerDeletion(roomId);
             }
@@ -1404,17 +1441,15 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         CardLayout card = (CardLayout) this.mainPanel.getLayout();
         card.show(this.mainPanel, "panel2");
-        this.customerController.refreshManageCustomerTable();
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         CardLayout card = (CardLayout) this.mainPanel.getLayout();
         card.show(this.mainPanel, "panel1");
-        this.roomController.refreshManageRoomTable();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void searchRoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchRoomButtonActionPerformed
-        JRadioButton[] radioButtons = { this.typeSingleButton, this.typeDoubleButton };
+        JRadioButton[] radioButtons = {this.typeSingleButton, this.typeDoubleButton};
 
         for (JRadioButton button : radioButtons) {
             if (button.isSelected()) {
@@ -1426,24 +1461,24 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
 
     private void selectRoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectRoomButtonActionPerformed
         // TODO add your handling code here:
-        int selectedRow = this.bookingRoomTable.getSelectedRow();
-        
+        int selectedRow = this.reservationRoomTable.getSelectedRow();
+
         if (selectedRow != -1) {
-            int roomId = (int) this.bookingRoomTable.getModel().getValueAt(selectedRow, 0);
-            String roomNumber = this.bookingRoomTable.getValueAt(selectedRow, 1).toString();
-            double pricePerNight = Double.parseDouble(this.bookingRoomTable.getValueAt(selectedRow, 2).toString());
-            String roomType = this.bookingRoomTable.getModel().getValueAt(selectedRow, 3).toString();
-            String status = this.bookingRoomTable.getValueAt(selectedRow, 4).toString();
-            
+            int roomId = (int) this.reservationRoomTable.getModel().getValueAt(selectedRow, 0);
+            String roomNumber = this.reservationRoomTable.getValueAt(selectedRow, 1).toString();
+            double pricePerNight = Double.parseDouble(this.reservationRoomTable.getValueAt(selectedRow, 2).toString());
+            String roomType = this.reservationRoomTable.getModel().getValueAt(selectedRow, 3).toString();
+            String status = this.reservationRoomTable.getValueAt(selectedRow, 4).toString();
+
             this.roomSelected = new Room(roomId, roomNumber, roomType, pricePerNight, status);
 //            System.out.println("RoomID = " + this.roomSelected.getRoomId() + "\n"
 //                               + "RoomNumber = " + this.roomSelected.getRoomNumber() + "\n"
 //                               + "PricePerNight = " + this.roomSelected.getRoomPrice() + "\n"
 //                               + "RoomType = " + this.roomSelected.getRoomType() + "\n"
 //                               + "Status = " + this.roomSelected.getStatus());
-            
+
             this.jLabel7.setText(roomNumber);
-            
+
             this.jLabel27.setText(roomNumber);
             this.jLabel28.setText(roomType);
             this.jLabel29.setText(String.valueOf(pricePerNight));
@@ -1453,17 +1488,17 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_selectRoomButtonActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
-        if (this.roomSelected == null|| this.customerSelected == null) {
+        if (this.roomSelected == null || this.customerSelected == null) {
             this.showErrorMessage("Please select a customer and an available room first.");
             return;
         }
-        
+
         if (this.selectedCheckInDate == null & this.selectedCheckOutDate == null) {
             this.showErrorMessage("Please select Check-In date and Check-Out date first.");
             return;
         }
-        
-        this.reservationController.handleReservation(this.customerSelected.getCustomerId(), this.roomSelected.getRoomId(), this.selectedCheckInDate, this.selectedCheckOutDate);
+
+        this.reservationController.handleMakeReservation(this.customerSelected.getCustomerId(), this.roomSelected.getRoomId(), this.selectedCheckInDate, this.selectedCheckOutDate);
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
@@ -1482,7 +1517,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
             this.labelLastName.setText(lastName);
             this.labelEmail.setText(email);
             this.labelPhoneNumber.setText(phoneNumber);
-            
+
             this.selectedCustomerLabel.setText(firstName);
         } else {
             this.showInfoMessage("Please select a row to submit customer.");
@@ -1505,9 +1540,9 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         this.selectedCheckInDate = this.checkInCalendar.getDate();
         this.selectedCheckOutDate = this.checkOutCalendar.getDate();
-        
+
         Date today = this.getTodayDate();
-        
+
         if (this.selectedCheckInDate == null || this.selectedCheckOutDate == null) {
             this.showInfoMessage("Please select both check-in and check-out dates.");
             return;
@@ -1524,17 +1559,32 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
             this.resetDate();
             return;
         }
-        
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         this.checkInLabel.setText(dateFormat.format(this.selectedCheckInDate));
         this.checkOutLabel.setText(dateFormat.format(this.selectedCheckOutDate));
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
-        // TODO add your handling code here:
-        this.reservationController
+//        this.reservationController.refreshCheckInTable();
     }//GEN-LAST:event_jTabbedPane1StateChanged
-    
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        int selectedRow = this.checkInRoomTable.getSelectedRow();
+
+        if (selectedRow != -1) {
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "Are you sure to Check-In this Reservation?",
+                    "Confirm",
+                    JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                this.reservationController.handleMakeCheckIn((int) this.checkInRoomTable.getValueAt(selectedRow, 0));
+            }
+        } else {
+            this.showInfoMessage("Please select a row to submit customer.");
+        }
+    }//GEN-LAST:event_jButton10ActionPerformed
+
     private Date getTodayDate() {
         Calendar todayCalendar = Calendar.getInstance();
         todayCalendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -1543,16 +1593,17 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         todayCalendar.set(Calendar.MILLISECOND, 0);
         return todayCalendar.getTime();
     }
-    
+
     private void resetDate() {
         this.selectedCheckInDate = null;
         this.selectedCheckOutDate = null;
     }
-    
+
     private void resetDateLabel() {
         this.checkInLabel.setText("Init date");
         this.checkOutLabel.setText("Init date");
     }
+
     /**
      * @param args the command line arguments
      */
@@ -1586,17 +1637,17 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                 RoomController roomController = new RoomController();
                 CustomerController customerController = new CustomerController();
                 ReservationController reservationController = new ReservationController();
-               new ReservedRoomGUI(roomController, customerController, reservationController).setVisible(true);
+                new ReservedRoomGUI(roomController, customerController, reservationController).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable bookingCustomerTable;
-    private javax.swing.JTable bookingRoomTable;
     private javax.swing.ButtonGroup buttonGroup1;
     private com.toedter.calendar.JCalendar checkInCalendar;
     private javax.swing.JLabel checkInLabel;
+    private javax.swing.JTable checkInRoomTable;
     private com.toedter.calendar.JCalendar checkOutCalendar;
     private javax.swing.JLabel checkOutLabel;
     private javax.swing.JPanel customerPanel;
@@ -1673,7 +1724,6 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JLabel labelEmail;
     private javax.swing.JLabel labelFirstName;
@@ -1684,6 +1734,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     private javax.swing.JTable manageCustomerTable;
     private javax.swing.JPanel manageDataTab;
     private javax.swing.JTextField phoneNumberField;
+    private javax.swing.JTable reservationRoomTable;
     private javax.swing.JPanel roomBookingTab;
     private javax.swing.JPanel roomCheckInTab;
     private javax.swing.JPanel roomCheckOutTab;

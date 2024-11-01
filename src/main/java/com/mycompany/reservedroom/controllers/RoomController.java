@@ -47,7 +47,7 @@ public class RoomController {
     public void handleSearchRoomAvailableByType(String type) {
         try {
             List<Room> rooms = this.roomDAO.getRoomAvailableByType(type);
-            this.viewMain.updateBookingRoomTable(rooms);
+            this.viewMain.updateReservationRoomTable(rooms);
             if (rooms.isEmpty()) {
                 viewMain.showInfoMessage("No available rooms found for the selected type.");
             }
