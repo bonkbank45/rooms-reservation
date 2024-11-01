@@ -56,12 +56,6 @@ public class ReservationImpl implements ReservationDAO {
         }
         return reservationList;
     }
-
-    @Override
-    public boolean editReservation(Reservation reservation) throws SQLException {
-        String query = "UPDATE reservations SET customer_id = ?, room_id = ?, check_in_date = ?, check_out_date = ?, reservation_date = ?, status = ? WHERE reservation_id = ?";
-        return executeUpdateWithReservation(query, reservation);
-    }
     
     @Override
     public boolean addReservation(Reservation reservation) throws SQLException {
@@ -86,24 +80,6 @@ public class ReservationImpl implements ReservationDAO {
                 }
                 return true;
             }
-        }
-        return false;
-    }
-    
-    @Override
-    public boolean destroyReservation(int reservationId) throws SQLException {
-        String query = "DELETE FROM reservations WHERE reservation_id = ?";
-        try (Connection conn = new ConnectionDbManager().getConnection()) {
-            PreparedStatement pst = conn.prepareStatement(query);
-            pst.setInt(1, reservationId);
-
-            int affectedRows = pst.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("Delete reservation failed, no rows affected.");
-            }
-            return true;
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
         }
         return false;
     }
