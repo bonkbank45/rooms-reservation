@@ -314,6 +314,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         checkInRoomTable = new javax.swing.JTable();
         jPanel14 = new javax.swing.JPanel();
         jButton10 = new javax.swing.JButton();
+        cancelReservationButton = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         roomCheckOutTab = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
@@ -1028,19 +1029,32 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
             }
         });
 
+        cancelReservationButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        cancelReservationButton.setForeground(new java.awt.Color(255, 0, 0));
+        cancelReservationButton.setText("Cancel Reservation");
+        cancelReservationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelReservationButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
         jPanel14Layout.setHorizontalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
+                .addComponent(cancelReservationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cancelReservationButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE))
                 .addGap(18, 18, 18))
         );
 
@@ -1637,7 +1651,9 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                     "Confirm",
                     JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
-                this.reservationController.handleMakeCheckOut((int) this.checkOutRoomTable.getValueAt(selectedRow, 0), this.checkOutRoomTable.getValueAt(selectedRow, 3).toString());
+                this.reservationController.handleMakeCheckOut(
+                        (int) this.checkOutRoomTable.getValueAt(selectedRow, 0), 
+                        this.checkOutRoomTable.getValueAt(selectedRow, 3).toString());
             }
         } else {
             this.showInfoMessage("Please select a row to submit check-out.");
@@ -1647,6 +1663,23 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         this.roomController.refreshManageRoomTable();
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void cancelReservationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelReservationButtonActionPerformed
+        int selectedRow = this.checkInRoomTable.getSelectedRow();
+        if (selectedRow != -1) {
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "Are you sure to cancel this reservation?",
+                    "Confirm",
+                    JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                this.reservationController.handleMakeCancel(
+                        (int) this.checkInRoomTable.getValueAt(selectedRow, 0), 
+                        this.checkInRoomTable.getValueAt(selectedRow, 3).toString());
+            }
+        } else {
+            this.showInfoMessage("Please select a row to cancel reservation");
+        }
+    }//GEN-LAST:event_cancelReservationButtonActionPerformed
 
     private Date getTodayDate() {
         Calendar todayCalendar = Calendar.getInstance();
@@ -1708,6 +1741,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable bookingCustomerTable;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton cancelReservationButton;
     private com.toedter.calendar.JCalendar checkInCalendar;
     private javax.swing.JLabel checkInLabel;
     private javax.swing.JTable checkInRoomTable;

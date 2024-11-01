@@ -103,8 +103,16 @@ public class ReservationController {
         }
     }
     
-    public void handleMakeCancel() {
-        // TODO
+    public void handleMakeCancel(int reservationId, String roomNumber) {
+        try {
+            boolean success = this.reservationDAO.cancelReservation(reservationId, roomNumber);
+            if (success) {
+                this.viewMain.showInfoMessage("Cancel reservation success!");
+                this.refreshCheckInTable();
+            }
+        } catch (SQLException e) {
+            this.viewMain.showErrorMessage("Error to cancel this reservation: " + e.getMessage());
+        }
     }
     
     private Date getTodayDate() {

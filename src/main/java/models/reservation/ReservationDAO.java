@@ -17,5 +17,5 @@ public interface ReservationDAO {
     
     boolean checkinReservation(int reservationId) throws SQLException;
     boolean checkoutReservation(int reservationId, String roomNumber) throws SQLException;
-    boolean cancelReservation(int reservationId) throws SQLException;
+    boolean cancelReservation(int reservationId, String roomNumber) throws SQLException;
 }

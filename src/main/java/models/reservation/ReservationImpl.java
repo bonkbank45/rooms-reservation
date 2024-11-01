@@ -133,8 +133,22 @@ public class ReservationImpl implements ReservationDAO {
     }
 
     @Override
-    public boolean cancelReservation(int reservationId) throws SQLException {
-        return updateReservationStatus(reservationId, this.STATUS_CHECKED_CANCEL);
+    public boolean cancelReservation(int reservationId, String roomNumber) throws SQLException {
+        boolean success = updateReservationStatus(reservationId, this.STATUS_CHECKED_CANCEL);
+        String updateRoomQuery = "UPDATE rooms SET status = ? WHERE room_number = ?";
+        if (success) {
+            try (Connection conn = new ConnectionDbManager().getConnection()) {
+                PreparedStatement pst = conn.prepareStatement(updateRoomQuery);
+                pst.setString(1, ROOM_AVAILABLE);
+                pst.setString(2, roomNumber);
+                int affectedRows = pst.executeUpdate();
+                if (affectedRows == 0) {
+                    throw new SQLException("Add room status failed, no rows affected when updating room status.");
+                }
+                return true;
+            }
+        }
+        return false;
     }
     
     @Override
