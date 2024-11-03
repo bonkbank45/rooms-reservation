@@ -61,8 +61,8 @@ public class EditCustomerGUI extends javax.swing.JFrame {
         emailField = new javax.swing.JTextField();
         phoneNumberField = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        submitCustomer = new javax.swing.JButton();
+        cancelCustomerSubmit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -136,17 +136,17 @@ public class EditCustomerGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Submit");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        submitCustomer.setText("Submit");
+        submitCustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                submitCustomerActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Cancel");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        cancelCustomerSubmit.setText("Cancel");
+        cancelCustomerSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                cancelCustomerSubmitActionPerformed(evt);
             }
         });
 
@@ -156,9 +156,9 @@ public class EditCustomerGUI extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cancelCustomerSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(submitCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -166,8 +166,8 @@ public class EditCustomerGUI extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
+                    .addComponent(cancelCustomerSubmit)
+                    .addComponent(submitCustomer))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -195,17 +195,17 @@ public class EditCustomerGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void cancelCustomerSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelCustomerSubmitActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_cancelCustomerSubmitActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void submitCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitCustomerActionPerformed
         this.customerController.handleCustomerEdit(this.customer.getCustomerId(), 
                                     this.firstNameField.getText(),
                                     this.lastNameField.getText(),
                                     this.emailField.getText(), 
                                     this.phoneNumberField.getText());
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_submitCustomerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -243,10 +243,9 @@ public class EditCustomerGUI extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelCustomerSubmit;
     private javax.swing.JTextField emailField;
     private javax.swing.JTextField firstNameField;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -257,5 +256,6 @@ public class EditCustomerGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField lastNameField;
     private javax.swing.JTextField phoneNumberField;
+    private javax.swing.JButton submitCustomer;
     // End of variables declaration//GEN-END:variables
 }

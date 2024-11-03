@@ -341,7 +341,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         showRoomTable = new javax.swing.JTable();
         deleteRoomButton = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
+        refreshManageRoomButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Room Reservation Program");
@@ -1356,10 +1356,10 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
             }
         });
 
-        jButton11.setText("Refresh");
-        jButton11.addActionListener(new java.awt.event.ActionListener() {
+        refreshManageRoomButton.setText("Refresh");
+        refreshManageRoomButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton11ActionPerformed(evt);
+                refreshManageRoomButtonActionPerformed(evt);
             }
         });
 
@@ -1378,7 +1378,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteRoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(refreshManageRoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
         roomPanelLayout.setVerticalGroup(
@@ -1388,7 +1388,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
                 .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(addRoomButton, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
-                        .addComponent(jButton11))
+                        .addComponent(refreshManageRoomButton))
                     .addComponent(editRoomButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(deleteRoomButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1660,9 +1660,9 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_submitCheckOutButtonActionPerformed
 
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+    private void refreshManageRoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshManageRoomButtonActionPerformed
         this.roomController.refreshManageRoomTable();
-    }//GEN-LAST:event_jButton11ActionPerformed
+    }//GEN-LAST:event_refreshManageRoomButtonActionPerformed
 
     private void cancelReservationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelReservationButtonActionPerformed
         int selectedRow = this.checkInRoomTable.getSelectedRow();
@@ -1758,7 +1758,6 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     private javax.swing.JButton editRoomButton;
     private javax.swing.JTextField emailFieldName;
     private javax.swing.JTextField firstNameField;
-    private javax.swing.JButton jButton11;
     private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1825,6 +1824,7 @@ public class ReservedRoomGUI extends javax.swing.JFrame {
     private javax.swing.JTable manageCustomerTable;
     private javax.swing.JPanel manageDataTab;
     private javax.swing.JTextField phoneNumberField;
+    private javax.swing.JButton refreshManageRoomButton;
     private javax.swing.JTable reservationRoomTable;
     private javax.swing.JPanel roomBookingTab;
     private javax.swing.JPanel roomCheckInTab;

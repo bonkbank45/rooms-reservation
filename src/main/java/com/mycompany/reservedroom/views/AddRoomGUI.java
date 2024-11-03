@@ -47,10 +47,10 @@ public class AddRoomGUI extends javax.swing.JFrame {
         roomNumberField = new javax.swing.JTextField();
         pricePerDayField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        roomTypeField = new javax.swing.JComboBox<>();
+        roomTypeDropdown = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        cancelSubmitRoom = new javax.swing.JButton();
+        submitRoom = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Add Room");
@@ -77,10 +77,10 @@ public class AddRoomGUI extends javax.swing.JFrame {
 
         jLabel3.setText("Room Type :");
 
-        roomTypeField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Single", "Double" }));
-        roomTypeField.addActionListener(new java.awt.event.ActionListener() {
+        roomTypeDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Single", "Double" }));
+        roomTypeDropdown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                roomTypeFieldActionPerformed(evt);
+                roomTypeDropdownActionPerformed(evt);
             }
         });
 
@@ -96,7 +96,7 @@ public class AddRoomGUI extends javax.swing.JFrame {
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(roomTypeField, 0, 120, Short.MAX_VALUE)
+                    .addComponent(roomTypeDropdown, 0, 120, Short.MAX_VALUE)
                     .addComponent(roomNumberField)
                     .addComponent(pricePerDayField))
                 .addContainerGap())
@@ -111,7 +111,7 @@ public class AddRoomGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(roomTypeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(roomTypeDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -119,17 +119,17 @@ public class AddRoomGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Cancel");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        cancelSubmitRoom.setText("Cancel");
+        cancelSubmitRoom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                cancelSubmitRoomActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Submit");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        submitRoom.setText("Submit");
+        submitRoom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                submitRoomActionPerformed(evt);
             }
         });
 
@@ -139,9 +139,9 @@ public class AddRoomGUI extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cancelSubmitRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(submitRoom)
                 .addGap(13, 13, 13))
         );
         jPanel2Layout.setVerticalGroup(
@@ -149,8 +149,8 @@ public class AddRoomGUI extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(cancelSubmitRoom)
+                    .addComponent(submitRoom))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -183,25 +183,25 @@ public class AddRoomGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_roomNumberFieldActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void cancelSubmitRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelSubmitRoomActionPerformed
         this.setVisible(false);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_cancelSubmitRoomActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void submitRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitRoomActionPerformed
         String roomNumber = this.roomNumberField.getText();
-        String roomType = this.roomTypeField.getSelectedItem().toString();
+        String roomType = this.roomTypeDropdown.getSelectedItem().toString();
         double pricePerDay = Double.parseDouble(this.pricePerDayField.getText());
         
         this.roomController.handleRoomAdding(roomNumber, roomType, pricePerDay);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_submitRoomActionPerformed
 
     private void pricePerDayFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pricePerDayFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_pricePerDayFieldActionPerformed
 
-    private void roomTypeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomTypeFieldActionPerformed
+    private void roomTypeDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomTypeDropdownActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_roomTypeFieldActionPerformed
+    }//GEN-LAST:event_roomTypeDropdownActionPerformed
 
     /**
      * @param args the command line arguments
@@ -240,8 +240,7 @@ public class AddRoomGUI extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton cancelSubmitRoom;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -249,6 +248,7 @@ public class AddRoomGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField pricePerDayField;
     private javax.swing.JTextField roomNumberField;
-    private javax.swing.JComboBox<String> roomTypeField;
+    private javax.swing.JComboBox<String> roomTypeDropdown;
+    private javax.swing.JButton submitRoom;
     // End of variables declaration//GEN-END:variables
 }

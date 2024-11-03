@@ -27,13 +27,7 @@ public class CustomerDAOImpl implements CustomerDAO{
             rs = pst.executeQuery();
             
             if (rs.next()) {
-                int id = rs.getInt("customer_id");
-                String first_name = rs.getString("first_name");
-                String last_name = rs.getString("last_name");
-                String email = rs.getString("email");
-                String phone_number = rs.getString("phone_number");
-
-                customerFounded = new Customer(id, first_name, last_name, email, phone_number);
+                customerFounded = mapToCustomer(rs);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -52,17 +46,11 @@ public class CustomerDAOImpl implements CustomerDAO{
             ResultSet rs = stmt.executeQuery(query);
 
             while (rs.next()) {
-                int customer_id = rs.getInt("customer_id");
-                String first_name = rs.getString("first_name");
-                String last_name = rs.getString("last_name");
-                String email = rs.getString("email");
-                String phone_number = rs.getString("phone_number");
-
                 try {
-                    Customer customer = new Customer(customer_id, first_name, last_name, email, phone_number);
+                    Customer customer = mapToCustomer(rs);
                     customerList.add(customer);
                 } catch (IllegalArgumentException e) {
-                    errorMessages.append("Invalid customer data - Id: ").append(customer_id).append(" ").append(e.getMessage()).append("\n");
+                    errorMessages.append("Invalid customer data - Id: ").append(rs.getInt("customer_id")).append(" ").append(e.getMessage()).append("\n");
                 }
             }
         }
@@ -113,13 +101,7 @@ public class CustomerDAOImpl implements CustomerDAO{
             ResultSet rs = pst.executeQuery();
             
             while (rs.next()) {
-                customers.add(new Customer(
-                    rs.getInt("customer_id"),
-                    rs.getString("first_name"),
-                    rs.getString("last_name"),
-                    rs.getString("email"),
-                    rs.getString("phone_number")
-                ));
+                customers.add(mapToCustomer(rs));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -186,5 +168,13 @@ public class CustomerDAOImpl implements CustomerDAO{
             System.out.println(ex.getMessage());
         }
         return false;
+    }
+    
+    private Customer mapToCustomer(ResultSet rs) throws SQLException {
+        return new Customer(rs.getInt("customer_id"),
+                    rs.getString("first_name"),
+                    rs.getString("last_name"),
+                    rs.getString("email"),
+                    rs.getString("phone_number"));
     }
 }

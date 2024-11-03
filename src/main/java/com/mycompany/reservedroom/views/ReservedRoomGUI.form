@@ -1806,7 +1806,7 @@
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="deleteRoomButton" min="-2" pref="117" max="-2" attributes="0"/>
                                           <EmptySpace max="32767" attributes="0"/>
-                                          <Component id="jButton11" min="-2" pref="117" max="-2" attributes="0"/>
+                                          <Component id="refreshManageRoomButton" min="-2" pref="117" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -1820,7 +1820,7 @@
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                                           <Component id="addRoomButton" alignment="3" pref="59" max="32767" attributes="0"/>
-                                          <Component id="jButton11" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="refreshManageRoomButton" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <Component id="editRoomButton" alignment="0" max="32767" attributes="0"/>
                                       <Component id="deleteRoomButton" alignment="0" max="32767" attributes="0"/>
@@ -1913,12 +1913,12 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteRoomButtonActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="jButton11">
+                        <Component class="javax.swing.JButton" name="refreshManageRoomButton">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="Refresh"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton11ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshManageRoomButtonActionPerformed"/>
                           </Events>
                         </Component>
                       </SubComponents>

@@ -33,13 +33,7 @@ public class RoomDAOImpl implements RoomDAO {
             rs = pst.executeQuery();
             
             if (rs.next()) {
-                int id = rs.getInt("room_id");
-                String room_number = rs.getString("room_number");
-                String room_type = rs.getString("room_type");
-                double price_per_night = rs.getDouble("price_per_night");
-                String status = rs.getString("status");
-
-                roomFounded = new Room(id, room_number, room_type, price_per_night, status);
+                roomFounded = mapToRoom(rs);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -59,16 +53,10 @@ public class RoomDAOImpl implements RoomDAO {
              ResultSet rs = stmt.executeQuery(query);
             
             while (rs.next()) {
-                int room_id = rs.getInt("room_id");
-                String room_number = rs.getString("room_number");
-                String room_type = rs.getString("room_type");
-                double room_price = rs.getDouble("price_per_night");
-                String status = rs.getString("status");
                 try {
-                    Room room = new Room(room_id, room_number, room_type, room_price, status);
-                    roomList.add(room);
+                    roomList.add(mapToRoom(rs));
                 } catch (IllegalArgumentException e) {
-                    errorMessages.append("Invalid room data - Id: ").append(room_id).append(" ").append(e.getMessage()).append("\n");
+                    errorMessages.append("Invalid room data - Id: ").append(rs.getInt("room_id")).append(" ").append(e.getMessage()).append("\n");
                 }
             }
         }
@@ -90,11 +78,7 @@ public class RoomDAOImpl implements RoomDAO {
             ResultSet rs = pst.executeQuery();
             
             while (rs.next()) {
-                rooms.add(new Room(rs.getInt("room_id"), 
-                        rs.getString("room_number"), 
-                        rs.getString("room_type"), 
-                        rs.getDouble("price_per_night"), 
-                        rs.getString("status")));
+                rooms.add(mapToRoom(rs));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -157,5 +141,13 @@ public class RoomDAOImpl implements RoomDAO {
             System.out.println(ex.getMessage());
         }
         return false;
+    }
+    
+    private Room mapToRoom(ResultSet rs) throws SQLException {
+        return new Room(rs.getInt("room_id"), 
+                        rs.getString("room_number"), 
+                        rs.getString("room_type"), 
+                        rs.getDouble("price_per_night"), 
+                        rs.getString("status"));
     }
 }

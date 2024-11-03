@@ -76,7 +76,7 @@ public class RoomController {
         }
     }
     
-    public void handleRoomEdit(int roomId, String newRoomNumber, String newRoomType, Double newPrice, String newStatus) throws IllegalArgumentException {
+    public void handleRoomEdit(int roomId, String newRoomNumber, String newRoomType, double newPrice, String newStatus) throws IllegalArgumentException {
         try {
             Room room = this.roomDAO.getRoomById(roomId);
             if (room == null) {
